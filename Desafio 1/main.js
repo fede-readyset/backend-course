@@ -4,26 +4,26 @@
 // Fecha límite entrega 29/Feb 23:59
 
 class ProductManager {
-    static id = 0;
+    ;
     constructor (products){
+        this.id = 0;
         this.products = [];
     }
 
     addProduct(title,description,price,thumbnail,code,stock){
         // id incrementable
-        ProductManager.id++;
+        this.id++;
 
-        
         // validar que code no se repita
         
-
         // validar que estén todos los campos
         
+
         // agregar item al array
-        this.products.push([id,title,description,price,thumbnail,code,stock]);
+        this.products.push([this.id,title,description,price,thumbnail,code,stock]);
 
         //confirmar por consola
-        console.log("Producto agregado con éxito: "+id+" - "+title);
+        //console.log("Producto agregado con éxito: "+this.id+" - "+title);
     }
 
     getProduct(){
@@ -48,6 +48,9 @@ const test = new ProductManager();
 
 console.log(test.getProduct());
 
+test.addProduct("producto prueba","Este es un producto de prueba",200,"Sin imagen","abc123",25);
+test.addProduct("producto prueba","Este es un producto de prueba",200,"Sin imagen","abc123",25);
+test.addProduct("producto prueba","Este es un producto de prueba",200,"Sin imagen","abc123",25);
 test.addProduct("producto prueba","Este es un producto de prueba",200,"Sin imagen","abc123",25);
 
 console.log(test.getProduct());
