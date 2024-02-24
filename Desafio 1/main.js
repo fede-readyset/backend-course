@@ -4,10 +4,9 @@
 // Fecha límite entrega 29/Feb 23:59
 
 class ProductManager {
-    ;
-    constructor (products){
+    constructor (products=[]){
         this.id = 1000;
-        this.products = [];
+        this.products = products;
     }
 
     addProduct(product){
@@ -29,11 +28,10 @@ class ProductManager {
             return 0;
         }
 
-        // agregar item al array
-
+        // agrego item al array
         product.id = this.id;
         this.products.push(product);
-        console.log("Producto agregado con id: "+product.id);
+        console.log("SUCCESS. Producto agregado con id: "+product.id);
         return this.id;
     }
 
@@ -45,8 +43,7 @@ class ProductManager {
     getProductById(id){ 
         //busco el producto y lo devuelvo el objeto si lo encuentro, sino devuelvo un error
         const buscado =  this.products.find(objeto => objeto.id === id)
-        if (buscado)    return buscado;
-        else            return `ERROR: Product with id ${id} not found.`
+        return buscado ? buscado : { error: `Product with id ${id} not found`};
     }
 }
 
@@ -78,5 +75,5 @@ test.addProduct(product2);
 console.log(test.getProduct());
 
 
-let id=1002;
+let id=1001;
 console.log(test.getProductById(id));
