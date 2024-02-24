@@ -6,24 +6,35 @@
 class ProductManager {
     ;
     constructor (products){
-        this.id = 0;
+        this.id = 1000;
         this.products = [];
     }
 
-    addProduct(title,description,price,thumbnail,code,stock){
-        // id incrementable
+    addProduct(product){
+        // id incremental
         this.id++;
 
-        // validar que code no se repita
-        
-        // validar que estén todos los campos
-        
+        // Valida que 'code' no esté repetido
+        if (this.products.some(existingProduct => existingProduct.code === product.code)) {
+            console.log("ERROR. No se puede agregar el producto porque el código " + product.code + " ya existe.");
+            return 0;
+        }
+
+        // defino cuáles son los campos requeridos
+        const requiredFields = ['name', 'code', 'description', 'thumbnail', 'price', 'stock'];
+        // busco cuales faltan
+        const missingFields = requiredFields.filter(field => !product[field]);
+        if (missingFields.length > 0) {
+            console.log("ERROR. No se puede agregar el producto porque faltan los siguientes campos: " + missingFields.join(', '));
+            return 0;
+        }
 
         // agregar item al array
-        this.products.push([this.id,title,description,price,thumbnail,code,stock]);
 
-        //confirmar por consola
-        //console.log("Producto agregado con éxito: "+this.id+" - "+title);
+        product.id = this.id;
+        this.products.push(product);
+        console.log("Producto agregado con id: "+product.id);
+        return this.id;
     }
 
     getProduct(){
@@ -31,26 +42,41 @@ class ProductManager {
         return this.products;
     }
 
-    getProductById(){
-        // devolver array del producto buscado
-        // buscar producto
-        // si no existe, mostrar "Not Found"
+    getProductById(id){ 
+        //busco el producto y lo devuelvo el objeto si lo encuentro, sino devuelvo un error
+        const buscado =  this.products.find(objeto => objeto.id === id)
+        if (buscado)    return buscado;
+        else            return `ERROR: Product with id ${id} not found.`
     }
-
 }
 
 
 
 
-// TESTING
 
+//////////////////
+// TESTING
+//////////////////
+
+// Instancio la clase
 const test = new ProductManager();
 
+// Llamo a getProduct(), devuelve vacío
 console.log(test.getProduct());
 
-test.addProduct("producto prueba","Este es un producto de prueba",200,"Sin imagen","abc123",25);
-test.addProduct("producto prueba","Este es un producto de prueba",200,"Sin imagen","abc123",25);
-test.addProduct("producto prueba","Este es un producto de prueba",200,"Sin imagen","abc123",25);
-test.addProduct("producto prueba","Este es un producto de prueba",200,"Sin imagen","abc123",25);
+// Defino el objeto product y lo agrego mediante el método addProduct()
+let product = { name: "Producto 1", description: "Este es un producto de prueba", price: 200,
+                thumbnail: "Sin imagen", code: "abc123", stock:25 }
+test.addProduct(product);
+
+// Defino el objeto product2 y lo agrego mediante el método addProduct()
+let product2 = { name: "Producto 2", description: "Este es un producto de prueba2", price: 1, 
+                 thumbnail: "Sin imagen2", code: "abc12",stock:25 }
+test.addProduct(product2);
+
 
 console.log(test.getProduct());
+
+
+let id=1002;
+console.log(test.getProductById(id));
