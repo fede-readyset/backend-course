@@ -14,6 +14,7 @@
 //-------------------------------
 // Modulos escritos por nosotros:
 //-------------------------------
+const moment = require("moment/moment.js");
 const operaciones = require( "./operaciones.js");
 // "require" es una función que me permite cargar o "requerir" algún modulo en particular.
 
@@ -45,3 +46,26 @@ console.log(operaciones.division(25,5));
 // Pasos para instalar módulos de terceros:
 // 1) Instalamos el módulo de terceros desde la terminal con el comando "npm install" y el nombre del módulo
 //     npm install moment
+
+
+// Si lo quiero borrar: npm uninstall moment
+
+// Si quiero instalar una versión particular: npm install moment@1.0
+
+
+// Instalamos dependencias de desarrollo. Sólo la vamos a usar en etapa de desarrollo)
+//      npm i nodemon -D
+
+console.log("hola mundo");
+
+
+// Los scripts son comandos personalizados por nosotros mismos.
+// Para ejecutarlos se usa la palabra "run", excepto el script "start".
+
+
+
+
+// Revisar dependencias desactualizadas
+// npm outdated (locales)
+// npm -g outdated (globales)
+
