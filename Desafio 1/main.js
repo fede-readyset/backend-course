@@ -4,10 +4,10 @@
 // Fecha límite entrega 29/Feb 23:59
 
 class ProductManager {
-    constructor (products=[]){
+    constructor (products = [], path){
         this.id = 1000;
         this.products = products;
-        this.path = "./db.json";
+        this.path = path;
     }
 
     addProduct(product){
@@ -55,6 +55,8 @@ class ProductManager {
 //////////////////
 // TESTING
 //////////////////
+
+let path="./db.json";
 
 // Instancio la clase
 const test = new ProductManager();
