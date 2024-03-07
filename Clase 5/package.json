@@ -1,0 +1,22 @@
+{
+  "name": "clase-5",
+  "version": "1.0.0",
+  "description": "Este es el material de la clase 5",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fede-readyset/backend-course.git"
+  },
+  "keywords": [
+    "firulais"
+  ],
+  "author": "Fede Torres",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fede-readyset/backend-course/issues"
+  },
+  "homepage": "https://github.com/fede-readyset/backend-course#readme"
+}
