@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Producto 1",
+    "description": "1111",
+    "price": 200,
+    "thumbnail": "Sin imagen",
+    "code": "prod1",
+    "stock": 100,
+    "id": 1
+  },
+  {
+    "name": "Producto 2",
+    "description": "2222",
+    "price": 200,
+    "thumbnail": "Sin imagen",
+    "code": "prod2",
+    "stock": 200,
+    "id": 2
+  },
+  {
+    "name": "Producto 3",
+    "description": "3333",
+    "price": 200,
+    "thumbnail": "Sin imagen",
+    "code": "prod3",
+    "stock": 300,
+    "id": 3
+  },
+  {
+    "name": "Producto 4",
+    "description": "4444",
+    "price": 200,
+    "thumbnail": "Sin imagen",
+    "code": "prod4",
+    "stock": 400,
+    "id": 4
+  }
+]
