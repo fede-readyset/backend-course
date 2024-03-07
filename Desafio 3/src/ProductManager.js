@@ -3,10 +3,10 @@
 // Alumno: Federico Torres
 // Fecha límite entrega 07/Mar 23:59
 
-const fs = require ("fs");
-const { exit } = require("process");
+// const fs = require ("fs");
+import fs from "fs";
 
-class ProductManager {
+export class ProductManager {
     constructor (path,products=[]){
         this.id = 0;
         this.products = products;
@@ -160,13 +160,13 @@ const test = new ProductManager("./db.json");
 
 // Llamo a getProduct()
 
-test.getProduct((error, products) => {
-    if (error) {
-        console.log("Error al obtener productos:", error.message);
-    } else {
-        console.log("Productos encontrados:", products);
-    }
-});
+// test.getProduct((error, products) => {
+//     if (error) {
+//         console.log("Error al obtener productos:", error.message);
+//     } else {
+//         console.log("Productos encontrados:", products);
+//     }
+// });
 
 
 
@@ -200,11 +200,11 @@ test.getProduct((error, products) => {
 //     .catch (error => console.log(error));
 
 
-let id=4;
-test.updateProduct(id,product4,(error)=>{
-    if (error) console.log(error);
-    else console.log("SUCCESS. Elemento actualizado con id: "+id);
-});
+// let id=4;
+// test.updateProduct(id,product4,(error)=>{
+//     if (error) console.log(error);
+//     else console.log("SUCCESS. Elemento actualizado con id: "+id);
+// });
 
 
 //  test.deleteProduct(1)

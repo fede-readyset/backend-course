@@ -34,5 +34,23 @@
     "code": "prod4",
     "stock": 400,
     "id": 4
+  },
+  {
+    "name": "Producto 5",
+    "description": "5555",
+    "price": 200,
+    "thumbnail": "Sin imagen",
+    "code": "prod5",
+    "stock": 500,
+    "id": 5
+  },
+  {
+    "name": "Producto 6",
+    "description": "6666",
+    "price": 200,
+    "thumbnail": "Sin imagen",
+    "code": "prod6",
+    "stock": 600,
+    "id": 6
   }
 ]
