@@ -10,7 +10,7 @@ class ProductManager {
     constructor (path,products=[]){
         this.id = 0;
         this.products = products;
-        this.path = path
+        this.path = path;
     }
 
     // Función auxiliar para encontrar el ID más alto del array
@@ -91,12 +91,12 @@ class ProductManager {
     updateProduct(id,product,callback) {
         this.getProduct((error,existingProducts=[]) => {
 
-            // if(!error){ 
-            //     // Sólo si encuentro productos en el file valido que 'code' no esté repetido...
-            //     if (existingProducts.some(existingProduct => existingProduct.code === product.code)) {
-            //         return callback(new Error("ERROR. No se puede agregar el producto porque el código " + product.code + " ya existe."));
-            //     }
-            // }
+            if(!error){ 
+                // Sólo si encuentro productos en el file valido que 'code' no esté repetido, ni sea el objeto en cuestión
+                if (existingProducts.some(existingProduct => existingProduct.code === product.code && existingProduct.id !== id)) {
+                    return callback(new Error("ERROR. No se puede actualizar el producto porque el código " + product.code + " ya existe."));
+                }
+            }
 
             // defino cuáles son los campos requeridos y busco cuáles faltan definir
             const requiredFields = ['name', 'code', 'description', 'thumbnail', 'price', 'stock'];
@@ -104,13 +104,11 @@ class ProductManager {
             if (missingFields.length > 0) {
                 return callback(new Error("ERROR. No se puede actualizar el producto porque faltan los siguientes campos: " + missingFields.join(', ')));
             }
-            // actualizo item en el array
-            for (let i = 0; i < existingProducts.length; i++){
-                if (existingProducts[i].id === id) {
-                    product.id=id;
-                    existingProducts[i] = {...product};
-                    break;
-                }
+
+            const index = existingProducts.findIndex(product => product.id === id);
+            if (index !== -1) {
+                product.id = id;
+                existingProducts[index] = { ...product };
             }
 
             fs.writeFile( this.path , JSON.stringify(existingProducts,null,2) , (error) => {
@@ -162,30 +160,32 @@ const test = new ProductManager("./db.json");
 
 // Llamo a getProduct()
 
-// test.getProduct((error, products) => {
-//     if (error) {
-//         console.log("Error al obtener productos:", error.message);
-//     } else {
-//         console.log("Productos encontrados:", products);
-//     }
-// });
+test.getProduct((error, products) => {
+    if (error) {
+        console.log("Error al obtener productos:", error.message);
+    } else {
+        console.log("Productos encontrados:", products);
+    }
+});
 
 
 
-// Defino el objeto product y lo agrego mediante el método addProduct()
-// let product = { name: "Producto 1", description: "1111", price: 500, thumbnail: "Sin imagen", code: "prod1", stock:100 };
-// let product = { name: "Producto 2", description: "2222222222", price: 200, thumbnail: "Sin imagen", code: "prod2", stock:200 };
-// let product = { name: "Producto 3", description: "3333", price: 200, thumbnail: "Sin imagen", code: "prod3", stock:300 };
- let product = { name: "Producto 4", description: "4444", price: 200, thumbnail: "Sin imagen", code: "prod4", stock:300 };
+// Defino algunos objetos product de ejemplo
+ let product1 = { name: "Producto 1", description: "1111", price: 200, thumbnail: "Sin imagen", code: "prod1", stock:100 };
+ let product2 = { name: "Producto 2", description: "2222", price: 200, thumbnail: "Sin imagen", code: "prod2", stock:200 };
+ let product3 = { name: "Producto 3", description: "3333", price: 200, thumbnail: "Sin imagen", code: "prod3", stock:300 };
+ let product4 = { name: "Producto 4", description: "4444", price: 200, thumbnail: "Sin imagen", code: "prod4", stock:400 };
 
-// test.addProduct(product,(error,id)=>{
+
+// Agrego productos al archivo mediante addProduct
+
+// test.addProduct(product2,(error,id)=>{
 //     if (error) console.log(error);
 //     else console.log("SUCCESS. Elemento agregado con id: "+id);
 // });
 
 
 
-
 // test.getProduct((error, products) => {
 //     if (error) {
 //         console.log("Error al obtener productos:", error.message);
@@ -195,17 +195,18 @@ const test = new ProductManager("./db.json");
 // });
 
 
-// test.getProductById(4)
+// test.getProductById(1)
 //     .then (product => console.log(product))
 //     .catch (error => console.log(error));
 
-// let id=2;
-// test.updateProduct(id,product,(error)=>{
-//     if (error) console.log(error);
-//     else console.log("SUCCESS. Elemento actualizado con id: "+id);
-// });
+
+let id=4;
+test.updateProduct(id,product4,(error)=>{
+    if (error) console.log(error);
+    else console.log("SUCCESS. Elemento actualizado con id: "+id);
+});
 
 
- test.deleteProduct(1)
-     .then (resultado => console.log(resultado))
-     .catch (error => console.log(error));
+//  test.deleteProduct(1)
+//      .then (resultado => console.log(resultado))
+//      .catch (error => console.log(error));
