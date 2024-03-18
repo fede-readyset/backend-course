@@ -15,7 +15,6 @@ router.get ("/products", (req,res) => {
         .then (products => {
             if (!limit){
                 res.send(products);
-                //res.send(formatDataAsTable(products));
             }
             else {
                 res.send(products.slice(0,limit));
@@ -28,7 +27,7 @@ router.get ("/products", (req,res) => {
 router.get ("/products/:pid", (req,res) => {
     let pid = parseInt(req.params.pid);
     PM.getProductById(pid)
-        .then (product => res.send(formatDataAsTable([product])))
+        .then (product => res.send(product))
         .catch (error => res.send(error));
 });
 
