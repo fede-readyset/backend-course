@@ -103,12 +103,21 @@ export class ProductManager {
                     if (existingProducts.some(existingProduct => existingProduct.code === product.code)) {
                         throw new Error("ERROR. No se puede agregar el producto porque el código " + product.code + " ya existe.");
                     }
-                    this.id = this.findHighestId(existingProducts) + 1;
-                    const requiredFields = ['name', 'code', 'description', 'thumbnail', 'price', 'stock'];
+                    this.id = this.findHighestId(existingProducts) + 1; //defino el ID sumando uno al mayor
+
+                    // Definir si están los campos requeridos y devolver error en caso contrario
+                    const requiredFields = ['title', 'code', 'description', 'category', 'price', 'stock']; //thumbnails y status no son required 
                     const missingFields = requiredFields.filter(field => !product[field]);
                     if (missingFields.length > 0) {
                         throw new Error("ERROR. No se puede agregar el producto porque faltan los siguientes campos: " + missingFields.join(', '));
                     }
+
+                    // Si status no está definido le asigno true por default
+                    if (product['status'] == undefined){
+                        product['status'] = true;
+                    }
+
+                    // Agrego al array y luego escribo en archivo
                     product.id = this.id;
                     existingProducts.push(product);
                     fs.writeFile(this.path, JSON.stringify(existingProducts, null, 2), error => {
@@ -177,22 +186,33 @@ export class ProductManager {
         return new Promise((resolve, reject) => {
             this.getProduct()
                 .then(existingProducts => {
-                    if (existingProducts.some(existingProduct => existingProduct.code === product.code && existingProduct.id !== id)) {
-                        throw new Error("ERROR. No se puede actualizar el producto porque el código " + product.code + " ya existe.");
-                    }
-                    const requiredFields = ['name', 'code', 'description', 'thumbnail', 'price', 'stock'];
-                    const missingFields = requiredFields.filter(field => !product[field]);
-                    if (missingFields.length > 0) {
-                        throw new Error("ERROR. No se puede actualizar el producto porque faltan los siguientes campos: " + missingFields.join(', '));
-                    }
+
+                    // Chequeo que el producto especificado ya exista y sino devuelvo error 
                     const index = existingProducts.findIndex(product => product.id === id);
                     if (index !== -1) {
                         product.id = id;
                         existingProducts[index] = { ...product };
+                    } else {
+                        throw new Error(`No se encontró ningún producto con el ID ${id}.`);
                     }
+
+
+                    // Chequeo que todos los campos requeridos estén presentes (se puede mejorar)
+                    const requiredFields = ['title', 'code', 'description', 'category', 'price', 'stock']; //thumbnails y status no son required 
+                    const missingFields = requiredFields.filter(field => !product[field]);
+                    if (missingFields.length > 0) {
+                        throw new Error("No se puede actualizar el producto porque faltan los siguientes campos: " + missingFields.join(', '));
+                    }
+
+                    // Chequeo que el product.code no exista ya en otro producto distinto al especificado
+                    if (existingProducts.some(thisProduct => thisProduct.code === product.code && thisProduct.id !== id)) {
+                        throw new Error(`No se puede actualizar el producto porque el código ${product.code} ya existe.`);
+                    }
+
+
                     fs.writeFile(this.path, JSON.stringify(existingProducts, null, 2), error => {
                         if (error) reject(error);
-                        resolve(this.id);
+                        resolve(product);
                     });
                 })
                 .catch(error => reject(error));

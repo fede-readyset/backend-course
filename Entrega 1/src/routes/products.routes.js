@@ -31,6 +31,30 @@ router.get ("/products/:pid", (req,res) => {
         .catch (error => res.send(error));
 });
 
+// Ruta POST
+router.post ("/products", (req,res) => {
+    const newProduct = req.body;
+    PM.addProduct(newProduct)
+        .then (product => res.send(`Producto añadido con id ${newProduct.id}.`))
+        .catch (error => {
+            console.log(error);
+            res.send(error.message);
+        })
+})
+
+// Ruta PUT
+router.put ("/products/:pid", (req,res) => {
+    const pid = parseInt(req.params.pid);
+    const newProductData = req.body;
+
+    PM.updateProduct(pid,newProductData)
+         .then (product => res.send(`Producto  modificado con éxito. ${product}`))
+         .catch (error => {
+            console.log(error);
+            res.send(error.message);
+         })
+})
+ 
 
 
 // Exporto:

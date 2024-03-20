@@ -12,8 +12,8 @@ import productsRouter from "./routes/products.routes.js";
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
-app.use("/", cartsRouter);
-app.use("/", productsRouter)
+app.use("/api", cartsRouter);
+app.use("/api", productsRouter)
 
 // Listener
 app.listen(PUERTO, () => {
