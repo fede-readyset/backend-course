@@ -1,9 +1,8 @@
 // CoderHouse - Curso de Backend
-// Desafío #3
+// Entrega 1
 // Alumno: Federico Torres
-// Fecha límite entrega 14/Mar 23:59
+// Fecha límite entrega 21/Mar 23:59
 
-// const fs = require ("fs");
 import fs from "fs";
 
 export class ProductManager {
@@ -23,24 +22,6 @@ export class ProductManager {
         }
         return maxId;
     }
-
-/*     getProduct(callback) {
-        fs.readFile(this.path, "utf-8", (error, contenido) => {
-            if (error) {
-                // Chequear si el archivo no existe o está vacío
-                if (error.code === 'ENOENT' || contenido.trim() === '') {
-                    return callback(null, []); // Devolver array vacío
-                }
-                return callback(error); // Devolver otros errores
-            }
-            try {
-                const products = JSON.parse(contenido);
-                callback(null, products);
-            } catch (parseError) {
-                callback(parseError); // Return parsing errors
-            }
-        });       
-    } */
 
     getProduct() {
         return new Promise((resolve, reject) => {
@@ -64,37 +45,6 @@ export class ProductManager {
         });
     }
 
-
- /*    addProduct(product,callback){
-        this.getProduct((error,existingProducts=[]) => {
-
-            if(!error){ 
-                // Sólo si encuentro productos en el file valido que 'code' no esté repetido...
-                if (existingProducts.some(existingProduct => existingProduct.code === product.code)) {
-                    return callback(new Error("ERROR. No se puede agregar el producto porque el código " + product.code + " ya existe."));
-                }
-
-                //... y busco cuál es el id más alto en el file para incrementarlo
-                this.id=this.findHighestId(existingProducts) + 1;
-            }
-
-            // defino cuáles son los campos requeridos y busco cuáles faltan definir
-            const requiredFields = ['name', 'code', 'description', 'thumbnail', 'price', 'stock'];
-            const missingFields = requiredFields.filter(field => !product[field]);
-            if (missingFields.length > 0) {
-                return callback(new Error("ERROR. No se puede agregar el producto porque faltan los siguientes campos: " + missingFields.join(', ')));
-            }
-
-            // agrego item al array
-            product.id = this.id;
-            existingProducts.push(product);
-
-            fs.writeFile( this.path , JSON.stringify(existingProducts,null,2) , (error) => {
-                if (error) return callback(error);
-                callback(null,this.id);
-            });
-        });
-    } */
 
     addProduct(product) {
         return new Promise((resolve, reject) => {
@@ -130,18 +80,6 @@ export class ProductManager {
     }
 
 
-/*     getProductById(id) {
-        return new Promise((resolve, reject) => {
-            this.getProduct((error, existingProducts = []) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    const buscado = existingProducts.find(objeto => objeto.id === id);
-                    buscado ? resolve(buscado) : reject({ error: `No se encontró ningún producto con id ${id}.` });
-                }
-            });
-        });
-    } */
     getProductById(id) {
         return new Promise((resolve, reject) => {
             this.getProduct()
@@ -153,35 +91,6 @@ export class ProductManager {
         });
     }
 
-/*     updateProduct(id,product,callback) {
-        this.getProduct((error,existingProducts=[]) => {
-
-            if(!error){ 
-                // Sólo si encuentro productos en el file valido que 'code' no esté repetido, ni sea el objeto en cuestión
-                if (existingProducts.some(existingProduct => existingProduct.code === product.code && existingProduct.id !== id)) {
-                    return callback(new Error("ERROR. No se puede actualizar el producto porque el código " + product.code + " ya existe."));
-                }
-            }
-
-            // defino cuáles son los campos requeridos y busco cuáles faltan definir
-            const requiredFields = ['name', 'code', 'description', 'thumbnail', 'price', 'stock'];
-            const missingFields = requiredFields.filter(field => !product[field]);
-            if (missingFields.length > 0) {
-                return callback(new Error("ERROR. No se puede actualizar el producto porque faltan los siguientes campos: " + missingFields.join(', ')));
-            }
-
-            const index = existingProducts.findIndex(product => product.id === id);
-            if (index !== -1) {
-                product.id = id;
-                existingProducts[index] = { ...product };
-            }
-
-            fs.writeFile( this.path , JSON.stringify(existingProducts,null,2) , (error) => {
-                if (error) return callback(error);
-                callback(null,this.id);
-            });
-        });
-    } */
     updateProduct(id, product) {
         return new Promise((resolve, reject) => {
             this.getProduct()
@@ -219,33 +128,6 @@ export class ProductManager {
         });
     }
 
-
-    /* deleteProduct(id) {
-        return new Promise((resolve, reject) => {
-            this.getProduct((error, existingProducts = []) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    const index = existingProducts.findIndex(producto => producto.id === id);
-                    if (index !== -1) {
-                        existingProducts.splice(index, 1); // Eliminar el producto del array
-
-                        fs.writeFile( this.path , JSON.stringify(existingProducts,null,2) , (error) => {
-                            if (error) {
-                                reject(error);
-                            } else {
-                                resolve({message: `El producto con id ${id} ha sido eliminado correctamente.` });
-                            }
-                        });
-
-                    } else {
-                        reject({ error: `No se encontró ningún producto con id ${id}.` });
-                    }
-                }
-            });
-        });
-    }
- */
     deleteProduct(id) {
         return new Promise((resolve, reject) => {
             this.getProduct()
@@ -278,7 +160,7 @@ export class ProductManager {
 //////////////////
 
 // Instancio la clase
-const test = new ProductManager("./db.json");
+// const test = new ProductManager("./db.json");
 
 // Llamo a getProduct()
 

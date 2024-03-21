@@ -1,10 +1,10 @@
 
 // Importo el módulo propio ProductManager.js y el módulo de terceros express  
-import { ProductManager } from "../ProductManager.js";
+import { ProductManager } from "../controllers/ProductManager.js";
 import express from "express";
 
 const router = express.Router();
-const PM = new ProductManager("./db.json");
+const PM = new ProductManager("./src/models/productos.json");
 
 
 // Primer endpoint con limit optativo por query
@@ -42,7 +42,7 @@ router.post ("/products", (req,res) => {
         })
 })
 
-// Ruta PUT
+// Ruta PUT (modificar)
 router.put ("/products/:pid", (req,res) => {
     const pid = parseInt(req.params.pid);
     const newProductData = req.body;
@@ -56,6 +56,18 @@ router.put ("/products/:pid", (req,res) => {
 })
  
 
+
+// Ruta DELETE (eliminar)
+router.delete("/products/:pid", (req,res) => {
+    const pid = parseInt(req.params.pid);
+    
+    PM.deleteProduct(pid)
+        .then (resultado => res.send(resultado))
+        .catch (error => {
+            console.log(error);
+            res.send(error);
+         })
+})
 
 // Exporto:
 export default router;

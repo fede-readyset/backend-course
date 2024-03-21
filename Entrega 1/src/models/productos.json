@@ -96,41 +96,8 @@
     "thumbnail": "aceite.jpg",
     "code": "6543210988",
     "stock": 20,
-    "category": "aceites",
+    "category": "almacen",
     "status": true,
     "id": 10
-  },
-  {
-    "title": "Leche descremada",
-    "category": "Leches",
-    "description": "Leche descremada, 1 litro",
-    "price": 2.29,
-    "thumbnail": "leche-desc.jpg",
-    "code": "1234567892",
-    "stock": 30,
-    "status": true,
-    "id": 11
-  },
-  {
-    "title": "Leche descremada",
-    "category": "Leches",
-    "description": "Leche descremada, 1 litro",
-    "price": 2.29,
-    "thumbnail": "leche-desc.jpg",
-    "code": "1234567893",
-    "stock": 30,
-    "status": true,
-    "id": 12
-  },
-  {
-    "title": "Leche descremada",
-    "category": "Leches",
-    "description": "Leche descremada, 1 litro",
-    "price": 2.29,
-    "thumbnail": "leche-desc.jpg",
-    "code": "1234567894",
-    "stock": 30,
-    "status": true,
-    "id": 13
   }
 ]
