@@ -1,0 +1,19 @@
+<h1>Desafío 4</h1>
+<h2>Listado de productos mediante HandleBars</h2>
+
+<div>    
+{{#each productos}}
+    <div class="card">
+        <p>Título: {{this.title}}</p>
+        <p>Descripción: {{this.description}}</p>
+        <p>Precio: ${{this.price}}</p>
+        <p>Stock: {{this.stock}}</p>
+        <p>Código: {{this.code}}</p>
+        <p>Status: {{#if this.status}} Activo {{else}} Inactivo {{/if}}</p>
+        <p>Thumbnail: {{this.thumbnail}}</p>
+        <p>Category: {{this.category}}</p>
+
+    </div>
+{{/each}}
+
+</div>
