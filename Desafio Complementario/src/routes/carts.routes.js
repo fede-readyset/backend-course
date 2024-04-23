@@ -1,8 +1,10 @@
 
 // Importo el módulo propio CartManager.js y el módulo de terceros express  
 import { CartManager } from "../controllers/CartManager.js";
-import CarritosModel from "../models/carritos.model.js"
+import CarritosModel from "../models/carritos.model.js";
+import ProductosModel from "../models/productos.model.js";
 import express from "express";
+
 
 const router = express.Router();
 const CM = new CartManager("./src/models/carritos.json");
@@ -24,12 +26,14 @@ router.get ("/carts", async (req,res) => {
 });
 
 // Ruta GET para listar el contenido de un carrito 
-router.get ("/carts/:cid", (req,res) => {
-    let cid = parseInt(req.params.cid);
-    CM.getCartById(cid)
-        .then (cart => res.send(cart))
+router.get ("/carts/:cid", async (req,res) => {
+    let cid = req.params.cid;
+    const carrito = await CarritosModel.findById(cid).populate("content")
+        .then (carrito => res.send(carrito))
         .catch (error => res.send(error));
+    
 });
+
 
 // Ruta POST para nuevos carritos
 router.post ("/carts", async (req,res) => {
@@ -49,14 +53,39 @@ router.post ("/carts/:cid/product/:pid", async (req,res) => {
     let cid = req.params.cid;
     let pid = req.params.pid;
 
+    try {
+        // Busco el carrito por su ID y devuelvo error si no existe
+        const carrito = await CarritosModel.findById(cid);
+        if (!carrito) throw new Error ("Carrito inexistente");
 
-    // Arrancar por aca 
-    CM.addProductToCart(cid,pid)
-         .then (cart => res.send(`Producto ${pid} añadido al carrito ${cid}.`))
-         .catch (error => {
-            console.log(error);
-            res.send(error.message);
-        })
+        // Busco el producto en la colección de productos y devuelvo error si no existe
+        const producto = await ProductosModel.findById(pid);
+        if (!producto) throw new Error ("Producto inexistente");
+
+
+        // Busco si el producto ya existe en el carrito
+        const productoIndex = carrito.content.findIndex(productobuscado => String(productobuscado.product) === pid);
+        
+        
+        if (productoIndex !== -1) {
+            // Si el producto ya está en el carrito, incrementar la cantidad en 1 unidad
+            carrito.content[productoIndex].qty += 1;
+        } else {
+            // Si el producto no está en el carrito, crear un nuevo item
+            const item = { product: producto, qty: 1 };
+            carrito.content.push(item);
+        }
+
+        await CarritosModel.findByIdAndUpdate(cid,carrito);
+
+        
+        console.log(`Producto ${pid} añadido al carrito ${cid}.`);
+        res.send(`Producto ${pid} añadido al carrito ${cid}.`);
+
+    } catch (error) {
+        console.log("Error al agregar producto al carrito:", error);
+        res.send("Error al agregar producto al carrito: " + error.message);
+    }
 })
 
 

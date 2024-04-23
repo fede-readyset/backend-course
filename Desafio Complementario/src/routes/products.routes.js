@@ -12,10 +12,6 @@ const router = express.Router();
 router.get ("/products", async (req,res) => {
     let limit = parseInt(req.query.limit);
 
-    // Con FS:
-    //PM.getProduct()
-
-    // Con MongoDB:
     const products = await ProductosModel.find().lean()
         .then (products => {
             if (!limit){
@@ -33,10 +29,6 @@ router.get ("/products/:pid", async (req,res) => {
     
     let pid = req.params.pid;
 
-    // Con FS:
-    //PM.getProductById(pid)
-
-    // Con MongoDB:
     const product = await ProductosModel.findById(pid)
         .then (product => res.send(product))
         .catch (error => res.send(error));
