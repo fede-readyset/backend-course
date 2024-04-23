@@ -1,0 +1,20 @@
+<h1> Listado de pizzas - Pizzeria el Codigo Loco</h1>
+
+<ul>
+    {{#each pizzas}}
+        <li><b>{{this.nombre}}</b></li>
+        <li> {{this.tam}}</li>
+        <li> {{this.cantidad}}</li>
+    {{/each}}
+</ul>
+
+{{#if hasPrevPage}}
+    <a href="/pizzas?page={{prevPage}}">Anterior</a>
+{{/if}}
+
+
+{{#if hasNextPage}}
+    <a href="/pizzas?page={{nextPage}}">Siguiente</a>
+{{/if}}
+
+<p>Pagina {{currentPage}} de {{totalPages}}</p>
