@@ -49,21 +49,12 @@ const httpServer = app.listen(PUERTO, () => {
 });
 
 
-
-
-
-
-
 // Instancio io para chat
 const io = new Server(httpServer);
-
 
 // Establecemos la conexión
 io.on("connection", async (socket) => {
     console.log("Nuevo usuario conectado");
-
-    
-
 
     socket.on("Request", async (data) => {
         //let productos = await PM.getProduct();
@@ -71,7 +62,6 @@ io.on("connection", async (socket) => {
         console.log(products);
         socket.emit("Productos", products);
     })
-
 
     socket.on("message", async (data)  => {
         const newMessage = new MensajesModel();
