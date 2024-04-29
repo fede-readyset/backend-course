@@ -6,7 +6,11 @@ const productosSchema = new mongoose.Schema({
     description: String, 
     price: Number,
     thumbnail: String,
-    code: String,
+    code: {
+        type:String,
+        unique:true,
+        required:true
+    },
     stock: Number,
     category: String,
     status: Boolean
@@ -14,6 +18,6 @@ const productosSchema = new mongoose.Schema({
 
 productosSchema.plugin(mongoosePaginate);
 
-const ProductosModel = mongoose.model("products", productosSchema);
+const ProductosModel = mongoose.model("product", productosSchema);
 
 export default ProductosModel;
