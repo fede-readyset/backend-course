@@ -1,0 +1,43 @@
+<div>
+    <form action="/newproduct" method="POST" enctype="multipart/form-data">
+{{!--     "application/x-www-form-urlencoded"
+ --}}        <div class="upload__container">
+            <h2>Agregar nuevo producto</h2>
+
+            
+            <div class="upload__container--title">
+                <input type="text" name="title" placeholder="Title">
+            </div>
+            <div class="upload__container--textarea">
+                <textarea name="description" placeholder="Descripción"></textarea>
+                
+            </div>
+            <div class="upload__container--title">
+                <input type="text" name="price" placeholder="Precio">
+            </div>
+            
+            <div class="upload__container--title">
+                <input type="text" name="code" placeholder="Código">
+            </div>
+            <div class="upload__container--title">
+                <input type="text" name="category" placeholder="Categoría">
+            </div>
+            <div class="upload__container--title">
+                <input type="text" name="stock" placeholder="Stock">
+            </div>
+            <div class="upload__container--image">
+                Thumbnail:
+                <input type="file" name="image">
+            </div>  
+            <div class="upload__container--title">
+                Activo? 
+                <input type="checkbox" name="status">
+            </div>
+            
+            <div class="upload__container--button">
+                <button>Save</button>
+            </div>
+
+        </div>
+    </form>
+</div>
