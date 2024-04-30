@@ -1,0 +1,17 @@
+<h2>Ver carrito: {{cid}}</h2>
+
+<div>
+{{#each carrito.products}}
+    <div class="card">
+        <div class="thumbnail-container">
+            <img class="thumbnail" src="{{this.product.thumbnail}}" alt="Imagen de {{this.product.title}}">
+        </div>
+        <p>Nombre: {{this.product.title}}</p>
+        <p>Descripcion: {{this.product.description}}</p>
+
+        <p>Precio unitario: € {{this.product.price}}</p>
+        <p>Cant: {{this.qty}} unidades</p>
+    </div>
+
+{{/each}}
+</div>
