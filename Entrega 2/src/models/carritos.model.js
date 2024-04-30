@@ -12,7 +12,7 @@ const carritosSchema = new mongoose.Schema({
 
 // Middleware PRE de MongoDB
 // carritosSchema.pre("findOne",function(next) {
-//     this.populate("product");
+//     this.populate("products.product");
 //     next();
 // })
 

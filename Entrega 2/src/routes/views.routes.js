@@ -30,7 +30,6 @@ const storage = multer.diskStorage({
 })
 
 // Middlewares
-// router.use();
 router.use(express.json());
 router.use(express.urlencoded({extended:true}));
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -49,12 +48,11 @@ router.get("/", async (req,res) => {
     if (req.query.sort === "asc") sort = "price";
     if (req.query.sort === "desc") sort = "-price";
 
-    console.log(sort);
     try {
         const result = await ProductosModel.paginate({},{limit,page,sort:sort});
 
         const products = result.docs.map(product => {
-            const {_id, ...rest} = product.toObject();
+            const { ...rest} = product.toObject();
             return rest;
         })
 
@@ -74,7 +72,14 @@ router.get("/", async (req,res) => {
     }
 })
 
+// Ruta para agregar productos a un carrito
+router.post("/addtocart", (req,res) => {
+    let {pid,cid} = req.body;
 
+    console.log(cid);
+    console.log(pid);
+    res.send(`Producto ${pid} agregado al carrito ${cid} (mentira)`);
+})
 
 
 // Ruta realTimeProducts

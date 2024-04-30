@@ -103,7 +103,6 @@ router.post ("/carts/:cid/product/:pid", async (req,res) => {
 
 
 // Ruta DELETE para eliminar un producto de un carrito
-// Como la consigna no especifica lo contrario, borro todas las unidades del producto especificado
 router.delete ("/carts/:cid/product/:pid", async (req,res) =>{
     let {cid,pid} = req.params;
 
@@ -153,6 +152,7 @@ router.delete("/carts/:cid", async (req,res) => {
     }
 })
 
+// Ruta PUT para modificar la cantidad de un producto en un carrito
 router.put ("/carts/:cid/product/:pid", async (req,res) => {
     let {cid,pid} = req.params;
     let newQty = req.body.qty;
@@ -185,6 +185,40 @@ router.put ("/carts/:cid/product/:pid", async (req,res) => {
 })
 
 
+// Ruta PUT para modificar productos mediante un arreglo
+router.put ("/carts/:cid/", async (req,res) => {
+    let cid = req.params.cid;
+    let newProducts = req.body;
+
+    //console.log(products);
+    
+    try {
+        // Busco el carrito por su ID y devuelvo error si no existe
+        const carrito = await CarritosModel.findById(cid);
+        if (!carrito) throw new Error ("Carrito inexistente");
+
+        for (const element of newProducts) {
+            const producto = await ProductosModel.findById(element.product._id);
+            if(!producto) throw new Error ("Producto inexistente");
+            const item = { product: producto, qty: element.qty };
+            carrito.products.push(item);
+
+        };
+        console.log(carrito);
+        await CarritosModel.findByIdAndUpdate(cid,carrito);
+
+
+
+        const response = `Carrito ${cid} actualizado.`;
+        console.log(response);
+        res.send(response);
+
+    } catch (error) {
+        const response = "No se pudo actualizar el carrito: " + error;
+        console.log(response);
+        res.send(response);
+    }
+})
 
 
 // Exporto:

@@ -59,7 +59,7 @@ io.on("connection", async (socket) => {
     socket.on("Request", async (data) => {
         //let productos = await PM.getProduct();
         const products = await ProductosModel.find().lean();
-        console.log(products);
+        //console.log(products);
         socket.emit("Productos", products);
     })
 
@@ -69,7 +69,7 @@ io.on("connection", async (socket) => {
         newMessage.message = data.message;
 
         const messages = await newMessage.save()
-        .then (message => console.log(message))
+        .then (message => console.log("Mensaje de chat recibido"))
         .catch (error => console.log(error)); 
 
         const messagesLogs = await MensajesModel.find().lean();
