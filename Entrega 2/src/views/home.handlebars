@@ -69,24 +69,21 @@
     addToCartForms.forEach(function(form) {
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // Evitar que el formulario se envíe automáticamente
-            var formAction = this.getAttribute('action'); // Obtener la URL de la API desde el formulario
+            var formAction = this.getAttribute('action'); // Obtener la URL original del formulario
             var formData = new FormData(this); // Obtener los datos del formulario
 
             // Enviar la solicitud a la API usando fetch
             fetch(formAction, {
-                method: 'POST', // Método de la solicitud (por ejemplo, POST para agregar un producto)
-                body: formData // Datos a enviar en la solicitud (por ejemplo, los datos del formulario)
+                method: 'POST', 
+                body: formData 
             })
             .then(response => {
                 // Verificar si la solicitud fue exitosa
                 if (!response.ok) {
                     throw new Error('Hubo un problema al agregar el producto.'); // Lanzar un error si la solicitud falla
                 } 
-                // Si la solicitud fue exitosa, no hacemos nada aquí, ya que no queremos mostrar la respuesta al usuario
-                //window.confirm("Producto agregado al carrito.");
-                //console.log(`Producto agregado con exito al carrito.`);
-
-                // Si la solicitud fue exitosa, mostrar una alerta con SweetAlert2
+                
+                // Si la solicitud fue exitosa, muestro una alerta con SweetAlert2
                 Swal.fire({
                     icon: 'success',
                     title: 'Producto agregado al carrito',
@@ -96,8 +93,14 @@
 
             })
             .catch(error => {
-                console.error('Error:', error); // Manejar cualquier error que ocurra durante la solicitud
-                // Aquí puedes realizar alguna acción adicional si lo deseas, como mostrar un mensaje de error al usuario
+                console.error('Error:', error); 
+                // Si la solicitud no fue exitosa, muestro un error con SweetAlert2
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al agregar el producto al carrito',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
             });
         });
     });

@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import express from "express";
 import ProductosModel from "../models/productos.model.js";
+import CarritosModel from "../models/carritos.model.js";
 import bodyParser from "body-parser";
 import multer from "multer";
 //import { ProductManager } from "../controllers/ProductManager.js";
@@ -35,10 +36,10 @@ router.use(express.urlencoded({extended:true}));
 router.use(bodyParser.urlencoded({ extended: true }));
 
 
-/////////
+////////////
 // RUTAS:
 
-// Ruta raíz /
+// Ruta raíz / que muestra el listado de productos
 router.get("/", async (req,res) => {
     let limit = parseInt(req.query.limit) || 10;
     let page = parseInt(req.query.page) || 1;
@@ -82,7 +83,7 @@ router.post("/addtocart", (req,res) => {
 })
 
 
-// Ruta realTimeProducts
+// Ruta para ver listado de productos en tiempo real con socket.io
 router.get("/realtimeproducts", (req,res) => {
     res.render("realTimeProducts");
 })
@@ -91,6 +92,32 @@ router.get("/realtimeproducts", (req,res) => {
 // Ruta Form de carga nuevos productos
 router.get("/newproduct", (req,res) => {
     res.render("newProduct");
+})
+
+
+
+// Ruta para ver un carrito
+router.get("/carts/:cid", async (req,res) => {
+    let cid = req.params.cid;
+    try {
+        const carrito = await CarritosModel.findById(cid).populate("products.product").lean();
+        
+
+        console.log(carrito);
+        
+        res.render("carts",{
+            cid: cid,
+            carrito: carrito
+        });
+    } catch (error) {
+        res.status(500).json({error: "Error interno del servidor"});
+        console.log(error);
+    }
+
+
+
+
+   // res.render("carts", {cid:cid});
 })
 
 
