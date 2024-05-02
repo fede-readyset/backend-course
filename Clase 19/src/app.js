@@ -9,6 +9,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import FileStore from "session-file-store";
+import MongoStore from "connect-mongo";
+
 
 const app = express();
 const PUERTO = 8081;
@@ -28,11 +30,17 @@ app.use(session({
     // 2) Con File Storage
     // npm i session-file-storage
     
-    store: new FileStorage({path:"./src/sessions", ttl:100, retries: 1}),
+    //store: new FileStorage({path:"./src/sessions", ttl:100, retries: 1}),
+    
     // path: ruta donde se guardan los archivos de sesiones
     // ttl: tiempo de vida (en segundos)
     // retries: cantidad de veces q el server intentará leer el archivo
 
+
+    // 3) Con Mongo Storage
+    // npm i connect-mongo
+
+    store:  MongoStore.create({mongoUrl: "mongodb+srv://torresfederico:coderhouse@cluster0.anozfok.mongodb.net/ecommerce?retryWrites=true&w=majority",ttl:100}) 
 }))
 
 

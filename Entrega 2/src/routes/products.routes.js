@@ -1,86 +1,42 @@
 
-// Importo el módulo propio ProductManager.js y el módulo de terceros express  
+// Importo el módulo propio ProductManager.js  
 //import { ProductManager } from "../controllers/ProductManager.js";
+import { ProductManager } from "../controllers/ProductManagerDB.js";
+
 
 
 import ProductosModel from "../models/productos.model.js";
 import express from "express";
 
 const router = express.Router();
-//const PM = new ProductManager("./src/models/productos.json");
+const PM = new ProductManager();
 
-
-// Primer endpoint con limit optativo por query
+// Endpoint para listar todos los productos
 router.get ("/products", async (req,res) => {
-    let limit = parseInt(req.query.limit) || 10;
-    let page = parseInt(req.query.page) || 1;
-    const filter = {}
-
-    if (req.query.cat) {
-        filter.category=req.query.cat;
-    }
-    if (req.query.stock) {
-        filter.stock=req.query.stock; 
-    }
-    
-    console.log(filter);
-    
-    let sort = "_id"; // Valor por defaul de sort
-    if (req.query.sort === "asc") sort = "price";
-    if (req.query.sort === "desc") sort = "-price";
-
-
-    const products = await ProductosModel.paginate(filter,{limit,page,sort:sort})
-        .then (products => {
-            if(products.hasPrevPage) {
-                products.prevLink=`/api/products/?limit=${limit}&page=${products.prevPage}`; 
-            } else {
-                products.prevLink=null;
-            }
-
-            if(products.hasNextPage) {
-                products.nextLink=`/api/products/?limit=${limit}&page=${products.nextPage}`; 
-            } else {
-                products.nextLink=null;; 
-            }
-
-            res.send(products);
-        })
-        .catch (error => res.send({status:"error",payload: `${error}`})); 
+    const products = await PM.getProducts(req)
+        .then (products => res.send(products))
+        .catch (error => res.send({status:"error",payload: `${error}`}));  
 })
 
-// Segundo endpoint con pid por params 
-router.get ("/products/:pid", async (req,res) => {
-    
-    let pid = req.params.pid;
 
-    const product = await ProductosModel.findById(pid)
+// Endpoint para listar un porducto según ID
+router.get ("/products/:pid", async (req,res) => {
+        const product = await PM.getProductById(req.params.pid)
         .then (product => res.send(product))
         .catch (error => res.send(error));
 });
 
-// Ruta POST (agregar)
-router.post ("/products", async (req,res) => {
-    const newProduct = new ProductosModel();
-    newProduct.title = req.body.title;
-    newProduct.category = req.body.category;
-    newProduct.description = req.body.description;
-    newProduct.price = req.body.price;
-    newProduct.thumbnail = req.body.thumbnail;
-    newProduct.code = req.body.code;
-    newProduct.stock = req.body.stock;
 
-    //PM.addProduct(newProduct)
-    const product = await newProduct.save()
-        .then (product => {
-            res.send(`Producto añadido con id ${newProduct._id}.`)
-            req.io.emit("UpdateNeeded",true); // Le aviso al cliente por socket que hay data nueva, así pide refresh
-        })
-        .catch (error => {
-            console.log(error);
-            res.send(error.message);
-        })
+// Endpoint para agregar productos nuevos
+router.post ("/products", async (req,res) => {
+
+    const product = await PM.addProduct(req,res);
+
 })
+
+
+
+
 
 // Ruta PUT (modificar)
 router.put ("/products/:pid", async (req,res) => {

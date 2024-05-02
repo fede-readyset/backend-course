@@ -1,0 +1,28 @@
+<header class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"></a>
+  <img src="/img/logotipo.jpeg" alt="Logotipo Codefour">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    <nav nav-pills>
+        <ul>
+            <li class="nav-item" active> <a href="/"> Products </a>   </li>
+            <li class="nav-item"> <a href="/realtimeproducts"> Realtime </a>   </li>
+            <li class="nav-item"> <a href="/newProduct"> New Product </a>   </li>
+            <li class="nav-item"> <a href="/chat"> Chat</a>   </li>
+            {{#if headerData.loggedIn }}
+                <li class="nav-item"> <a href="/api/sessions/logout"> Logout</a>   </li>
+            {{else}}
+                <li class="nav-item"> <a href="/login"> Login </a>   </li>
+                <li class="nav-item"> <a href="/register"> Register</a>   </li>
+            {{/if}} 
+
+
+        </ul>
+
+        {{#if headerData.loggedIn }}            
+            <span class="navbar-text"> Hola {{headerData.user.first_name}} ({{headerData.user.role}}) </span> 
+        {{/if}}  
+    </nav>
+    </div>
+
+</header>

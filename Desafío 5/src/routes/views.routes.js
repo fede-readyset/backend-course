@@ -57,6 +57,12 @@ router.get("/", async (req,res) => {
             return rest;
         })
 
+        const headerData = {
+            loggedIn: req.session.login,
+            user: req.session.user
+        };
+        console.log(headerData)
+
         res.render("home",{
             products: products,
             hasPrevPage: result.hasPrevPage,
@@ -66,7 +72,8 @@ router.get("/", async (req,res) => {
             currentPage: result.page,
             totalPages: result.totalPages,
             limit: limit,
-            sort: req.query.sort
+            sort: req.query.sort,
+            headerData
         });
     } catch (error) {
         res.status(500).json ({error: "Error interno del servidor"});
@@ -141,6 +148,24 @@ router.post("/newproduct", multer({storage}).single("image"), async (req,res) =>
     }
 }) 
 
+
+
+
+router.get("/login", async (req,res) => {
+    res.render("login");
+} )
+
+router.get("/register", async (req,res) => {
+    res.render("register");
+} )
+
+router.get("/profile", async (req,res) => {
+    if(!req.session.login) {
+        return res.redirect("login");
+    } else {
+        return res.render("profile");
+    }
+} )
 
 // Exporto
 export default router;
