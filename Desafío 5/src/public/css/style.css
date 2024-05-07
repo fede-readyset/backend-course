@@ -90,6 +90,8 @@ nav a:hover {
 
 .upload__container--image input[type="file"],
 .upload__container--title input[type="text"],
+.upload__container--title input[type="email"],
+.upload__container--title input[type="password"],
 .upload__container--textarea textarea,
 .upload__container--button button {
     padding: 10px;

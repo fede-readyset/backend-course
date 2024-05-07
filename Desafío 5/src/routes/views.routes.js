@@ -44,6 +44,7 @@ router.get("/", async (req,res) => {
     let limit = parseInt(req.query.limit) || 10;
     let page = parseInt(req.query.page) || 1;
 
+    if(!req.session.login) res.redirect("/login");
 
     let sort = "_id"; // Valor por defaul de sort
     if (req.query.sort === "asc") sort = "price";
