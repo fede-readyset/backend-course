@@ -2,7 +2,6 @@ import ProductosModel from "../models/productos.model.js";
 
 export class ProductManager {
     constructor (products=[]){
-        this.id = 0;
         this.products = products;
     }
 
