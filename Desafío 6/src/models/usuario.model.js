@@ -7,7 +7,7 @@ const usuariosSchema = new mongoose.Schema ({
     },
     last_name: {
         type: String,
-        required: true
+        required: false
     },
     email: {
         type: String,
@@ -17,18 +17,20 @@ const usuariosSchema = new mongoose.Schema ({
     },
     password: {
         type: String,
-        required: true
+        required: false
     },
     age: {
         type: Number,
-        required: true
+        required: false
     },
     role: {
         type: String,
         enum: ["admin","user"],
-        required: true
-    }
-
+        required: false
+    },
+    avatar_url:  String
+    
+    
 })
 
 

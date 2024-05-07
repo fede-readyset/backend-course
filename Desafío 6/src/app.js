@@ -9,6 +9,9 @@ import "./database.js";
 
 import { Server } from "socket.io";
 
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
+
 // import { ProductManager } from "./controllers/ProductManager.js";
 // const PM = new ProductManager("./src/models/productos.json");
 
@@ -40,6 +43,9 @@ app.use(session({
         ttl:3600   
     })
 }))
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Middleware para pasar el objeto io al router
 app.use((req, res, next) => {

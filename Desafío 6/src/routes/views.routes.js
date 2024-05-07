@@ -180,7 +180,12 @@ router.get("/profile", async (req,res) => {
     if(!req.session.login) {
         return res.redirect("login");
     } else {
-        return res.render("profile");
+        const session = {
+            loggedIn: req.session.login,
+            user: req.session.user,
+        };
+        console.log(session);
+        return res.render("profile",{session});
     }
 } )
 

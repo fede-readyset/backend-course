@@ -13,14 +13,15 @@ socket.on("Productos", (data) => {
             <table border="1">
                 <thead>
                     <tr>
+                        <th>Imagen</th>
                         <th>Título</th>
                         <th>Descripción</th>
                         <th>Precio</th>
-                        <th>Imagen</th>
+                        <th>Estado</th>
                         <th>Código</th>
                         <th>Stock</th>
                         <th>Categoría</th>
-                        <th>Estado</th>
+                        
                     </tr>
                 </thead>
                 <tbody>`;
@@ -28,14 +29,14 @@ socket.on("Productos", (data) => {
         data.forEach(producto => {
             tablaProductos += `
                 <tr>
-                <td>${producto.title}</td>
-                <td>${producto.description}</td>
-                <td>$${producto.price}</td>
-                <td>${producto.thumbnail}</td>
-                <td>${producto.code}</td>
-                <td>${producto.stock}</td>
-                <td>${producto.category}</td>
-                <td>${producto.status ? 'Disponible' : 'No disponible'}</td>
+                    <td><img class="mini__thumbnail" src="${producto.thumbnail}"></td>
+                    <td>${producto.title}</td>
+                    <td>${producto.description}</td>
+                    <td>$${producto.price}</td>
+                    <td>${producto.status ? 'Disponible' : 'No disponible'}</td>
+                    <td>${producto.code}</td>
+                    <td>${producto.stock}</td>
+                    <td>${producto.category}</td>
                 </tr>`;
         });
 
