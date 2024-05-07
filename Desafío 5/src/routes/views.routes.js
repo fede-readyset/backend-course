@@ -41,10 +41,11 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 // Ruta raíz / que muestra el listado de productos
 router.get("/", async (req,res) => {
+
+    if(!req.session.login) return res.redirect("/login");
+
     let limit = parseInt(req.query.limit) || 10;
     let page = parseInt(req.query.page) || 1;
-
-    if(!req.session.login) res.redirect("/login");
 
     let sort = "_id"; // Valor por defaul de sort
     if (req.query.sort === "asc") sort = "price";
@@ -83,6 +84,8 @@ router.get("/", async (req,res) => {
 
 // Ruta para agregar productos a un carrito
 router.post("/addtocart", (req,res) => {
+    if(!req.session.login) return res.redirect("/login");
+
     let {pid,cid} = req.body;
 
     console.log(cid);
@@ -93,12 +96,16 @@ router.post("/addtocart", (req,res) => {
 
 // Ruta para ver listado de productos en tiempo real con socket.io
 router.get("/realtimeproducts", (req,res) => {
+    if(!req.session.login) return res.redirect("/login");
+
     res.render("realTimeProducts");
 })
 
 
 // Ruta Form de carga nuevos productos
 router.get("/newproduct", (req,res) => {
+    if(!req.session.login) return res.redirect("/login");
+
     res.render("newProduct");
 })
 
@@ -106,6 +113,8 @@ router.get("/newproduct", (req,res) => {
 
 // Ruta para ver un carrito
 router.get("/carts/:cid", async (req,res) => {
+    if(!req.session.login) return res.redirect("/login");
+
     let cid = req.params.cid;
     try {
         const carrito = await CarritosModel.findById(cid).populate("products.product").lean();
@@ -130,6 +139,8 @@ router.get("/carts/:cid", async (req,res) => {
 
 // Ruta para cargar nuevos productos
 router.post("/newproduct", multer({storage}).single("image"), async (req,res) => {
+    if(!req.session.login) return res.redirect("/login");
+
     try {
         const nuevoProducto = new ProductosModel();
         nuevoProducto.title = req.body.title;
@@ -148,8 +159,6 @@ router.post("/newproduct", multer({storage}).single("image"), async (req,res) =>
         res.status(500).send({message: `Error en el servidor: ${error}`}); 
     }
 }) 
-
-
 
 
 router.get("/login", async (req,res) => {

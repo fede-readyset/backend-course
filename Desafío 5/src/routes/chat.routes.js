@@ -3,9 +3,9 @@ const router = express.Router();
 
 
 router.get ("/", (req,res) => {
-    res.render("chat");
+    if(!req.session.login) return res.redirect("/login");
+    res.render("chat", {user: req.session.user.first_name});
 });
-
 
 
 // Exporto:

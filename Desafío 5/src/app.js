@@ -37,7 +37,7 @@ app.use(session({
     saveUninitialized:true,
     store: MongoStore.create({
         mongoUrl: "mongodb+srv://torresfederico:coderhouse@cluster0.anozfok.mongodb.net/ecommerce?retryWrites=true&w=majority",
-        ttl:100   
+        ttl:3600   
     })
 }))
 

@@ -10,18 +10,22 @@ const chatBox = document.getElementById("chatBox");
 // Swal es un objeto global que nos permite usar los métodos de la librería
 // Fire es un método que nos permite configurar la alerta
 
-Swal.fire({
-    title: "Identificate",
-    input: "text",
-    text: "Ingresá un usuario para identificarte en el chat",
-    inputValidator: (value) => {
-            return !value && "Necesitás escribir un nombre para continuar";
-    },
-    allowOutsideClick: false,
 
-}).then( result  => {
-    user = result.value;
-})
+// Le comento la interfaz de identificación del usuario porque ahora ya viene por la session
+// Swal.fire({
+//     title: "Identificate",
+//     input: "text",
+//     text: "Ingresá un usuario para identificarte en el chat",
+//     inputValidator: (value) => {
+//             return !value && "Necesitás escribir un nombre para continuar";
+//     },
+//     allowOutsideClick: false,
+
+// }).then( result  => {
+//     user = result.value;
+// })
+
+user = document.getElementById('user').getAttribute('username');
 
 chatBox.addEventListener("keyup", (event) => {
     if(event.key === "Enter") {
