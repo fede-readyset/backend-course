@@ -4,7 +4,11 @@ const router = express.Router();
 
 router.get ("/", (req,res) => {
     if(!req.session.login) return res.redirect("/login");
-    res.render("chat", {user: req.session.user.first_name});
+    const session = {
+        loggedIn: req.session.login,
+        user: req.session.user
+    };
+    res.render("chat", {session});
 });
 
 

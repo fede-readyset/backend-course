@@ -1,9 +1,6 @@
-
-// Importo el módulo propio ProductManager.js y el módulo de terceros express  
+// Importo módulos propios y de terceros 
 //import { ProductManager } from "../controllers/ProductManager.js";
 import { ProductManager } from "../controllers/ProductManagerDB.js";
-
-
 import ProductosModel from "../models/productos.model.js";
 import express from "express";
 

@@ -1,6 +1,6 @@
 <header class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#"></a>
-  <img src="/img/logotipo.jpeg" alt="Logotipo Codefour">
+  <img id="logotipo" src="/img/logotipo.jpeg" alt="Logotipo Codefour">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
     <nav nav-pills>
@@ -9,7 +9,7 @@
             <li class="nav-item"> <a href="/realtimeproducts"> Realtime </a>   </li>
             <li class="nav-item"> <a href="/newProduct"> New Product </a>   </li>
             <li class="nav-item"> <a href="/chat"> Chat</a>   </li>
-            {{#if headerData.loggedIn }}
+            {{#if session.loggedIn }}
                 <li class="nav-item"> <a href="/api/sessions/logout"> Logout</a>   </li>
             {{else}}
                 <li class="nav-item"> <a href="/login"> Login </a>   </li>
@@ -19,8 +19,8 @@
 
         </ul>
 
-        {{#if headerData.loggedIn }}            
-            <span class="navbar-text"> Hola {{headerData.user.first_name}} ({{headerData.user.role}}) </span> 
+        {{#if session.loggedIn }}            
+            <span class="navbar-text"> Logueado como {{session.user.first_name}} {{session.user.last_name}} (Rol: {{session.user.role}}) </span> 
         {{/if}}  
     </nav>
     </div>

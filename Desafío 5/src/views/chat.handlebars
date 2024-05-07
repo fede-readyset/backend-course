@@ -1,9 +1,9 @@
 <div class="upload__container">
 
 
-  <h2>Chat del eCommerce. Hola {{user}}</h2>
+  <h2>Chat del eCommerce. Hola {{session.user.first_name}}</h2>
 
-  <div id="user" username="{{user}}"></div>
+  <div id="user" username="{{session.user.first_name}}"></div>
 
   <div>
       Mensaje: <input type="text" id="chatBox">

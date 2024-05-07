@@ -59,11 +59,10 @@ router.get("/", async (req,res) => {
             return rest;
         })
 
-        const headerData = {
+        const session = {
             loggedIn: req.session.login,
             user: req.session.user
         };
-        console.log(headerData)
 
         res.render("home",{
             products: products,
@@ -75,7 +74,7 @@ router.get("/", async (req,res) => {
             totalPages: result.totalPages,
             limit: limit,
             sort: req.query.sort,
-            headerData
+            session
         });
     } catch (error) {
         res.status(500).json ({error: "Error interno del servidor"});
@@ -97,16 +96,24 @@ router.post("/addtocart", (req,res) => {
 // Ruta para ver listado de productos en tiempo real con socket.io
 router.get("/realtimeproducts", (req,res) => {
     if(!req.session.login) return res.redirect("/login");
+    
+    const session = {
+        loggedIn: req.session.login,
+        user: req.session.user
+    };
 
-    res.render("realTimeProducts");
+    res.render("realTimeProducts",{session});
 })
 
 
 // Ruta Form de carga nuevos productos
 router.get("/newproduct", (req,res) => {
     if(!req.session.login) return res.redirect("/login");
-
-    res.render("newProduct");
+    const session = {
+        loggedIn: req.session.login,
+        user: req.session.user
+    };
+    res.render("newProduct",{session});
 })
 
 
@@ -118,20 +125,20 @@ router.get("/carts/:cid", async (req,res) => {
     let cid = req.params.cid;
     try {
         const carrito = await CarritosModel.findById(cid).populate("products.product").lean();
-        
+        const session = {
+            loggedIn: req.session.login,
+            user: req.session.user
+        };
         res.render("carts",{
             cid: cid,
-            carrito: carrito
+            carrito: carrito,
+            session
         });
     } catch (error) {
         res.status(500).json({error: "Error interno del servidor"});
         console.log(error);
     }
 
-
-
-
-   // res.render("carts", {cid:cid});
 })
 
 
