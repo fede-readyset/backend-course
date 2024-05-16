@@ -7,6 +7,10 @@ import GitHubStrategy from "passport-github2";
 import UsuarioModel from "../models/usuario.model.js";
 import { createHash, isValidPassword } from "../utils/hashbcrypt.js";
 
+import { CartManager } from "../controllers/CartManagerDB.js";
+
+const CM = new CartManager();
+
 const LocalStrategy = local.Strategy;
 
 const initializePassport = () => {
@@ -25,7 +29,8 @@ const initializePassport = () => {
                 return done(null, false);
             }
 
-            // Si no existe creo un registro nuevo
+            // Si no existe instancio un carrito y creo un registro nuevo
+            const response = await CM.addCart();
             let nuevoUsuario = {
                 first_name,
                 last_name,
@@ -33,6 +38,7 @@ const initializePassport = () => {
                 age,
                 password: createHash(password),
                 avatar_url: "/img/generic_avatar.jpeg",
+                cart: response.cart,
                 role:"user"
             }
 
@@ -61,7 +67,7 @@ const initializePassport = () => {
             if (!isValidPassword(password, usuario)) {
                 return done(null, false);
             }
-
+            
             return done(null, usuario);
         } catch (error) {
             return done(error);
@@ -93,6 +99,7 @@ const initializePassport = () => {
             let usuario = await UsuarioModel.findOne({email: profile._json.email});
 
             if(!usuario) {
+                const response = await CM.addCart();
                 let nuevoUsuario = {
                     first_name: profile._json.name,
                     last_name: "",
@@ -100,6 +107,7 @@ const initializePassport = () => {
                     email: profile._json.email,
                     password:"",
                     avatar_url: profile._json.avatar_url ? profile._json.avatar_url: "/img/generic_avatar.jpeg",
+                    cart: response.cart,
                     role:"user"
                 }
 

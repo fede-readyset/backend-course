@@ -9,6 +9,7 @@
                 <li class="nav-item" active> <a class="nav-link" href="/"> Products </a> </li>
                 <li class="nav-item"> <a class="nav-link" href="/realtimeproducts"> Realtime </a> </li>
                 <li class="nav-item"> <a class="nav-link" href="/newProduct"> New Product </a> </li>
+                <li class="nav-item"> <a class="nav-link" href="/carts"> My Cart </a> </li>
                 <li class="nav-item"> <a class="nav-link" href="/chat"> Chat</a> </li>
                 
             </ul>
@@ -19,13 +20,17 @@
 
         {{#if session.loggedIn }}
         <span class="navbar-text ml-auto">
-            <img class="profile__miniavatar" src="{{session.user.avatar_url}}" alt="Avatar">
-            {{session.user.first_name}} {{session.user.last_name}} (Rol: {{session.user.role}})
+            
+             <a class="nav-link" href="/profile">
+                <img class="profile__miniavatar" src="{{session.user.avatar_url}}" alt="Avatar">
+                {{session.user.first_name}} {{session.user.last_name}} (Rol: {{session.user.role}})
+            </a>
             {{#if session.loggedIn }}
                 <a class="nav-link" href="/api/sessions/logout"> Logout</a> 
             {{else}}
                 <a class="nav-link" href="/login"> Login </a> 
             {{/if}}
+
         </span>
         {{/if}}
     </div>

@@ -1,5 +1,7 @@
 import express from "express";
+
 const router = express.Router();
+
 
 // import UsuarioModel from "../models/usuario.model.js";
 // import { isValidPassword } from "../utils/hashbcrypt.js";
@@ -42,14 +44,17 @@ router.post("/login", passport.authenticate("login",{
     if(!req.user) {
         return res.status(400).send("Credenciales inválidas");
     }
+
     req.session.user = {
         first_name: req.user.first_name,
         last_name: req.user.last_name,
         email: req.user.email,
         age: req.user.age,
         role: req.user.role,
+        cart: req.user.cart,
         avatar_url: req.user.avatar_url
     }
+    console.log("Session: " + req.session.user);
     req.session.login = true;
     res.send("<p>Logueado con éxito. Redireccionando...</p>         <meta http-equiv='refresh' content='1;url=/profile'>");
 
@@ -57,7 +62,7 @@ router.post("/login", passport.authenticate("login",{
 
 
 
-router.get("faillogin", async (req,res) =>{
+router.get("/faillogin", async (req,res) =>{
     res.send("Fallo al autenticar!");
 })
 
@@ -84,6 +89,11 @@ router.get("/logout", (req,res) => {
     res.redirect("/login");
 });
 
+
+// Current:
+router.get("/current", (req,res) => {
+    res.send(req.session.user);    
+})
 
 
 export default router;

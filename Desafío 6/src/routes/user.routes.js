@@ -62,6 +62,7 @@ router.post("/", passport.authenticate("register", {
         email: req.user.email,
         age: req.user.age,
         role: req.user.role,
+        cart: req.user.cart,
         avatar_url: req.user.avatar_url
     }
     req.session.login = true;

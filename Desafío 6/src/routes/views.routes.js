@@ -119,11 +119,18 @@ router.get("/newproduct", (req,res) => {
 
 
 // Ruta para ver un carrito
-router.get("/carts/:cid", async (req,res) => {
+router.get("/carts/:cid?", async (req,res) => {
     if(!req.session.login) return res.redirect("/login");
 
-    let cid = req.params.cid;
+    //let cid = req.params.cid;
     try {
+        let cid = "";
+        if(req.params.cid){
+            cid = req.params.cid;
+        } else {
+            cid = req.session.user.cart;
+        }
+        
         const carrito = await CarritosModel.findById(cid).populate("products.product").lean();
         const session = {
             loggedIn: req.session.login,
@@ -134,12 +141,24 @@ router.get("/carts/:cid", async (req,res) => {
             carrito: carrito,
             session
         });
+        
+        
     } catch (error) {
         res.status(500).json({error: "Error interno del servidor"});
         console.log(error);
     }
 
 })
+/* 
+// Ruta para ver MI carrito
+router.get("/myCart", async (req,res) => {
+    if(!req.session.login) return res.redirect("/login");
+    try {
+        
+    } catch (error) {
+        
+    }
+}) */
 
 
 
