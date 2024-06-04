@@ -7,9 +7,9 @@ import GitHubStrategy from "passport-github2";
 import UsuarioModel from "../models/usuario.model.js";
 import { createHash, isValidPassword } from "../utils/hashbcrypt.js";
 
-import { CartManager } from "../controllers/CartManagerDB.js";
+import { CartController } from "../controllers/cart.controller.js";
 
-const CM = new CartManager();
+const CM = new CartController();
 
 const LocalStrategy = local.Strategy;
 

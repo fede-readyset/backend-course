@@ -19,7 +19,7 @@ import initializePassport from "./config/passport.config.js";
 const PUERTO = 8080;
 const app = express();
 
-// Vinculo las rutas
+// Importo las rutas
 import cartsRouter from "./routes/carts.routes.js";
 import productsRouter from "./routes/products.routes.js";
 import viewsRouter from "./routes/views.routes.js";
@@ -73,6 +73,9 @@ app.use("/api/sessions", sessionsRouter);
 const httpServer = app.listen(PUERTO, () => {
     console.log(`Escuchando en el http://localhost:${PUERTO}`);
 });
+
+
+
 
 
 // Instancio io para chat
