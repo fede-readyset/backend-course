@@ -1,6 +1,8 @@
 import mongoose, { mongo } from "mongoose";
+import configObject from "./config/config.js";
 
-mongoose.connect("mongodb+srv://torresfederico:coderhouse@cluster0.anozfok.mongodb.net/ecommerce?retryWrites=true&w=majority")
+
+mongoose.connect(configObject.mongo_url)
     .then ( () => console.log("Conectado a MongoDB"))
-    .catch ( (error) => console.log("Tenemos un error.", error))
+    .catch ( (error) => console.log("Conexión fallida a MongoDB", error))
 

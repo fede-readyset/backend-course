@@ -32,15 +32,15 @@ import ProductosModel from "./models/productos.model.js";
 
 // Configuro Middlewares
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./src/public"));
 app.use(session({
-    secret:"secretCoder",
-    resave:true,
-    saveUninitialized:true,
+    secret: "secretCoder",
+    resave: true,
+    saveUninitialized: true,
     store: MongoStore.create({
         mongoUrl: "mongodb+srv://torresfederico:coderhouse@cluster0.anozfok.mongodb.net/ecommerce?retryWrites=true&w=majority",
-        ttl:3600   
+        ttl: 3600
     })
 }))
 initializePassport();
@@ -51,13 +51,13 @@ app.use(passport.session());
 app.use((req, res, next) => {
     req.io = io;
     next();
-  });
+});
 
 
 // Configuro express-handlebars
 app.engine("handlebars", exphbs.engine());
 app.set("view engine", "handlebars");
-app.set("views","./src/views");
+app.set("views", "./src/views");
 
 // Configuro Rutas
 app.use("/", viewsRouter);
@@ -86,20 +86,18 @@ io.on("connection", async (socket) => {
     console.log("Nuevo usuario conectado");
 
     socket.on("Request", async (data) => {
-        //let productos = await PM.getProduct();
         const products = await ProductosModel.find().lean();
-        //console.log(products);
         socket.emit("Productos", products);
     })
 
-    socket.on("message", async (data)  => {
+    socket.on("message", async (data) => {
         const newMessage = new MensajesModel();
         newMessage.user = data.user;
         newMessage.message = data.message;
 
         const messages = await newMessage.save()
-        .then (message => console.log("Mensaje de chat recibido"))
-        .catch (error => console.log(error)); 
+            .then(message => console.log("Mensaje de chat recibido"))
+            .catch(error => console.log(error));
 
         const messagesLogs = await MensajesModel.find().lean();
         io.emit("messagesLogs", messagesLogs);

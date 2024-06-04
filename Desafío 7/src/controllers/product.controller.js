@@ -1,82 +1,93 @@
 import ProductosModel from "../models/productos.model.js";
 
-export class ProductManager {
-    constructor (products=[]){
+export class ProductController {
+    constructor(products = []) {
         this.products = products;
     }
 
 
-    async getProducts(filter,limit,page,sort) {
-        
+    async getProducts(req, res) {
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page) || 1;
+        const filter = {}
+        if (req.query.cat) filter.category = req.query.cat;
+        if (req.query.stock) filter.stock = req.query.stock;
+
+        var sort = "_id"; // Valor por default de sort
+        if (req.query.sort === "asc") sort = "price";
+        if (req.query.sort === "desc") sort = "-price";
+
         try {
-            const products = await ProductosModel.paginate(filter,{limit,page,sort:sort})
-        
-            if(products.hasPrevPage) {
-                products.prevLink=`/api/products/?limit=${limit}&page=${products.prevPage}`; 
+            const products = await ProductosModel.paginate(filter, { limit, page, sort: sort })
+
+            if (products.hasPrevPage) {
+                products.prevLink = `/api/products/?limit=${limit}&page=${products.prevPage}`;
             } else {
-                products.prevLink=null;
+                products.prevLink = null;
             }
-            if(products.hasNextPage) {
-                products.nextLink=`/api/products/?limit=${limit}&page=${products.nextPage}`; 
+            if (products.hasNextPage) {
+                products.nextLink = `/api/products/?limit=${limit}&page=${products.nextPage}`;
             } else {
-                products.nextLink=null;; 
+                products.nextLink = null;;
             }
 
             if (products) {
-                return {
+                res.json({
                     success: true,
                     message: "Listado de productos:",
                     products: products
-                }
+                });
             } else {
-                return {
+                res.status(404).json({
                     success: false,
                     message: "No hay productos para mostrar"
-                }
+                });
             }
         } catch (error) {
-            return {
+            res.status(500).json({
                 success: false,
                 message: "Fallo al obtener listado de productos",
-                error: error.message 
-            };
+                error: error.message
+            });
         }
-        
 
-        
+
+
     }
 
 
 
     // Obtener un producto según su ID
-    async getProductById(pid) {
+    async getProductById(req, res) {
+        const pid = req.params.pid;
         try {
             const product = await ProductosModel.findById(pid)
             if (product) {
-                return {
+                res.json({
                     success: true,
                     message: "Producto encontrado con éxito",
                     product: product
-                };
+                });
             } else {
-                return {
+                res.status(404).json({
                     success: false,
                     message: "Producto no encontrado"
-                };
+                });
             }
         } catch (error) {
-            return {
+            res.status(500).json({
                 success: false,
                 message: "Fallo al obtener producto",
-                error: error.message 
-            };
+                error: error.message
+            });
         }
 
     }
 
 
     // Agregar nuevo producto
-    async addProduct(product){
+    async addProduct(req, res) {
+        const product = req.body;
         try {
             const newProduct = new ProductosModel({
                 title: product.title,
@@ -91,70 +102,80 @@ export class ProductManager {
 
             await newProduct.save()
 
-            return {
+            res.json({
                 success: true,
                 message: "Producto agregado con éxito",
                 id: newProduct._id
-            }
+            })
+            // Aviso al cliente realtime que hay updates
+            req.io.emit("UpdateNeeded", true);
 
         } catch (error) {
-            return {
+            res.status(500).json({
                 success: false,
                 message: "Fallo al agregar producto",
-                error: error.message 
-            };
+                error: error.message
+            });
         }
     }
 
-    async updateProduct(pid,updatedProduct){
+    async updateProduct(req, res) {
+        const pid = req.params.pid;
+        const updatedProduct = req.body;
+
         try {
             const product = await ProductosModel.findByIdAndUpdate(pid, updatedProduct)
 
             if (product) {
-                return {
+                res.json({
                     success: true,
                     message: "Producto actualizado con éxito",
                     id: pid
-                }
+                });
+                // Aviso al cliente realtime que hay updates
+                req.io.emit("UpdateNeeded", true);
             } else {
-                return {
+                res.status(404).json({
                     success: false,
                     message: "No se encontró el producto a actualizar",
-                }
+                });
             }
-            
+
         } catch (error) {
-            return {
+            res.status(500).json({
                 success: false,
                 message: "Fallo al actualizar producto",
-                error: error.message 
-            }
+                error: error.message
+            });
         }
     }
 
 
-    async deleteProduct(pid){
+    async deleteProduct(req, res) {
+        const pid = req.params.pid;
         try {
             const product = await ProductosModel.findByIdAndDelete(pid);
             if (product) {
-                return {
+                res.json({
                     success: true,
                     message: "Producto eliminado con éxito",
                     id: pid
-                }
+                });
+                // Aviso al cliente realtime que hay updates
+                req.io.emit("UpdateNeeded", true);
             } else {
-                return {
+                res.status(404).json({
                     success: false,
                     message: "No se encontró el producto a eliminar",
-                }
+                });
             }
-            
+
         } catch (error) {
-            return {
+            res.status(500).json({
                 success: false,
                 message: "Fallo al actualizar producto",
-                error: error.message 
-            }
+                error: error.message
+            });
         }
     }
 }
