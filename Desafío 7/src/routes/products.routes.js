@@ -3,7 +3,7 @@ import express from "express";
 const router = express.Router();
 
 // Importo el Controller de Productos
-import { ProductController } from "../controllers/product.controller.js";
+import ProductController from "../controllers/product.controller.js";
 const productController = new ProductController();
 
 // Defino las rutas
