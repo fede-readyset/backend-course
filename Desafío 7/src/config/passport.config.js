@@ -2,6 +2,7 @@
 import passport from "passport";
 import local from "passport-local";
 import GitHubStrategy from "passport-github2";
+import configObject from "./config.js";
 
 // Importo Modelo y funciones de bcrypt
 import UsuarioModel from "../models/usuario.model.js";
@@ -89,8 +90,8 @@ const initializePassport = () => {
 
     // Genero estrategias de auth con GitHub
     passport.use("github", new GitHubStrategy({
-        clientID: "Iv23ctrSpvxsHRzH2bWN",
-        clientSecret: "ebd513f63a6132e3192d9e38bc16c23e23d22522",
+        clientID: configObject.github_client_id,
+        clientSecret: configObject.github_client_secret,
         callbackURL: "http://localhost:8080/api/sessions/githubcallback"
     }, async (accessToken, refreshToken, profile, done) => {
         //console.log("Profile: ", profile);
