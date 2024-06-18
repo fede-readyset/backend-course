@@ -1,0 +1,17 @@
+[
+  {
+    "nombre": "aro de basquet",
+    "categoria": "deportes",
+    "precio": 30
+  },
+  {
+    "nombre": "Barbie",
+    "categoria": "muñecas",
+    "precio": 100
+  },
+  {
+    "nombre": "Barbie",
+    "categoria": "muñecas",
+    "precio": 100
+  }
+]
