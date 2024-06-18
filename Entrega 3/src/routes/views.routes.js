@@ -43,7 +43,8 @@ router.get("/carts/:cid?", viewsController.renderCart);
 router.get("/realtimeproducts", checkUserRole(['admin']), viewsController.renderRealTimeProducts);
 router.get("/login", viewsController.renderLogin);
 router.get("/register", viewsController.renderRegister);
-router.get("/newproduct", checkUserRole(['admin']),viewsController.renderNewProductForm);
+router.get("/newproduct", checkUserRole(['admin']), viewsController.renderNewProductForm);
+router.get("/accessdenied", viewsController.renderAccessDenied);
 
 
 

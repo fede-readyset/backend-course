@@ -28,7 +28,7 @@
                         <input type="number" class="quantity-input" value="{{this.qty}}">
                         <button class="quantity-btn" data-action="increase" data-index="{{this.product._id}}">+</button>
                         <div class="btn-group">
-                            <button class="update-btn">
+                            <button class="update-btn" data-index="{{this.product._id}}">
                                 <span class="bi bi-arrow-clockwise"></span>
                             </button>
                             <button class="remove-btn" data-index="{{this.product._id}}">
@@ -76,7 +76,7 @@
             const updateBtn = control.querySelector('.update-btn');
             const removeBtn = control.querySelector('.remove-btn');
             const quantityInput = control.querySelector('.quantity-input');
-            const productIndex = decreaseBtn.getAttribute('data-index');
+            const pid = decreaseBtn.getAttribute('data-index');
 
             decreaseBtn.addEventListener('click', function () {
                 let currentValue = parseInt(quantityInput.value);
@@ -91,13 +91,31 @@
             });
 
             updateBtn.addEventListener('click', function () {
-                let newQuantity = parseInt(quantityInput.value);
+                let updateArray = [ { product: {_id: pid}, qty: parseInt(quantityInput.value) }];
 
-                console.log(`Actualizar cantidad del producto ${productIndex} a ${newQuantity}`);
+                let updateUrl = `/api/carts/{{session.user.cart}}`;
+
+                console.log(`Update URL: ${updateUrl}`);
+                console.log(`Update Array: ${updateArray}`)
+                console.log(`New Qty: ${updateArray[0].qty}`)
+
+                 fetch(updateUrl,{ method:'PUT', body: updateArray})
+                    .then(response =>{
+                        if(!response.ok){
+                            throw new Error('Hubo un problema al actualizar el carrito.');
+                        }
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Cantidad actualizada',
+                            showConfirmButton:false,
+                            timer:2000
+                        });
+                    })
+ 
             });
 
             removeBtn.addEventListener('click', function () {
-                console.log(`Eliminar el producto ${productIndex} del carrito`);
+                console.log(`Eliminar el producto ${pid} del carrito`);
 
             });
 
@@ -105,13 +123,11 @@
 
 
         confirmButton.addEventListener('click', function (){
-            console.log("Confirmando compra")
             var confirmPurchaseUrl="/api/carts/{{session.user.cart}}/purchase"
             fetch(confirmPurchaseUrl, {
                 method: 'GET'
             })
             .then(response => {
-                console.log(response);
                 if(!response.ok){
                     throw new Error('Hubo un problema al iniciar el checkout.');
                 }
@@ -123,7 +139,6 @@
                 });
                 
                 setTimeout(function() { location.reload();}, 2000);                        
-
             });
         });
 

@@ -1,14 +1,21 @@
 const checkUserRole = (allowedRoles) => (req,res,next) => {
+    if (!req.session || !req.session.user) {
+        req.session.error="Acceso denegado. Sesión no activa"
+        return res.redirect('/login');
+    }
+    
     const userRole = req.session.user.role;
 
     if (userRole) {
         if (allowedRoles.includes(userRole)) {
             next();
         } else {
-            res.status(403).json({ error: 'Acceso denegado.', role: userRole, allowedRoles: allowedRoles });
+            req.session.error="Acceso denegado. Sesión no activa"
+            return res.redirect('/accessdenied');
         }
     } else {
-        res.status(403).json({ error: 'Acceso denegado.' , role: userRole, allowedRoles: allowedRoles });
+        req.session.error="Acceso denegado. Sesión no activa"
+        return res.redirect('/accessdenied');
     }
 }
 

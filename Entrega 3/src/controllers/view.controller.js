@@ -144,6 +144,11 @@ class ViewsController {
 
     }
 
+    async renderAccessDenied(req,res){
+
+        res.render("accessDenied");
+    }
+
 }
 
 export default ViewsController;
