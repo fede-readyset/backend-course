@@ -15,6 +15,7 @@ const cartController = new CartController();
 const LocalStrategy = local.Strategy;
 
 const initializePassport = () => {
+
     // Armo mis estrategias de registro y login
     passport.use("register", new LocalStrategy({
         // Accedo al objeto request
@@ -93,8 +94,6 @@ const initializePassport = () => {
         clientSecret: configObject.github_client_secret,
         callbackURL: "http://localhost:8080/api/sessions/githubcallback"
     }, async (accessToken, refreshToken, profile, done) => {
-        //console.log("Profile: ", profile);
-
         try {
             let usuario = await UsuarioModel.findOne({email: profile._json.email});
 

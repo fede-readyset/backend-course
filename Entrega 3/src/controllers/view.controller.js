@@ -104,6 +104,18 @@ class ViewsController {
         }
     }
 
+    // Vista de nuevo producto
+    async renderNewProductForm(req,res) {
+        if(!req.session.login) return res.redirect("/login");
+
+        const session = {
+            loggedIn: req.session.login,
+            user: req.session.user
+        };
+        res.render("newProduct",{session});
+    }
+
+
 
     // Vista del login
     async renderLogin(req, res) {

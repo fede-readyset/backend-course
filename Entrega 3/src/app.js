@@ -4,11 +4,12 @@ import exphbs from "express-handlebars";
 
 import MongoStore from "connect-mongo";
 import session from "express-session";
+import cookieParser from 'cookie-parser';
 
+// Importo conexión con database
 import "./database.js";
 
-import { Server } from "socket.io";
-
+// Importo passport e inicializo las estrategias
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 

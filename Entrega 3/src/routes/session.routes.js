@@ -1,11 +1,8 @@
 import express from "express";
+import passport from "passport";
 
 const router = express.Router();
 
-
-// import UsuarioModel from "../models/usuario.model.js";
-// import { isValidPassword } from "../utils/hashbcrypt.js";
-import passport from "passport";
 
 
 router.post("/login", passport.authenticate("login",{

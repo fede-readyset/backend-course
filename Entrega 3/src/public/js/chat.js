@@ -4,26 +4,13 @@ const socket = io();
 
 // Creamos una variable para guardar el usuario.
 let user;
+
+document.addEventListener('DOMContentLoaded', function() {
+    socket.emit("init", {});
+
+})
+
 const chatBox = document.getElementById("chatBox");
-
-// Utilizamos Sweetalert para el mensaje de bienvenida
-// Swal es un objeto global que nos permite usar los métodos de la librería
-// Fire es un método que nos permite configurar la alerta
-
-
-// Le comento la interfaz de identificación del usuario porque ahora ya viene por la session
-// Swal.fire({
-//     title: "Identificate",
-//     input: "text",
-//     text: "Ingresá un usuario para identificarte en el chat",
-//     inputValidator: (value) => {
-//             return !value && "Necesitás escribir un nombre para continuar";
-//     },
-//     allowOutsideClick: false,
-
-// }).then( result  => {
-//     user = result.value;
-// })
 
 user = document.getElementById('user').getAttribute('username');
 
@@ -35,6 +22,7 @@ chatBox.addEventListener("keyup", (event) => {
         }
     }
 })
+
 
 var dateFromObjectId = function (oid) {
     var timestamp = parseInt(oid.substring(0, 8), 16) * 1000;
@@ -63,4 +51,5 @@ socket.on("messagesLogs", (data) => {
         messages = messages + `[${timeStamp}] ${message.user}: ${message.message} <br>`;
     })
     log.innerHTML = messages;
+    log.scrollTop = log.scrollHeight;
 })

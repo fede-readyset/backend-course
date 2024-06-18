@@ -1,4 +1,5 @@
 import express from "express";
+import checkUserRole from "../middlewares/rolecheck.js";
 
 import ViewsController from "../controllers/view.controller.js";
 const viewsController = new ViewsController();
@@ -39,35 +40,12 @@ router.use(bodyParser.urlencoded({ extended: true }));
 // RUTAS:
 router.get("/", viewsController.renderProducts);
 router.get("/carts/:cid?", viewsController.renderCart);
-router.get("/realtimeproducts", viewsController.renderRealTimeProducts);
+router.get("/realtimeproducts", checkUserRole(['admin']), viewsController.renderRealTimeProducts);
 router.get("/login", viewsController.renderLogin);
 router.get("/register", viewsController.renderRegister);
+router.get("/newproduct", checkUserRole(['admin']),viewsController.renderNewProductForm);
 
 
-
-
-
-// Ruta para agregar productos a un carrito
-router.post("/addtocart", (req,res) => {
-    if(!req.session.login) return res.redirect("/login");
-
-    let {pid,cid} = req.body;
-
-    console.log(cid);
-    console.log(pid);
-    res.send(`Producto ${pid} agregado al carrito ${cid} (mentira)`);
-})
-
-
-// Ruta Form de carga nuevos productos
-router.get("/newproduct", (req,res) => {
-    if(!req.session.login) return res.redirect("/login");
-    const session = {
-        loggedIn: req.session.login,
-        user: req.session.user
-    };
-    res.render("newProduct",{session});
-})
 
 
 

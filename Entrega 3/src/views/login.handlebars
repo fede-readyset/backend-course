@@ -1,25 +1,25 @@
-<br>    
-<form action="/api/sessions/login" method="POST">
-    <div class="upload__container">
-        <h1>Login</h1> <br>
-        <div class="upload__container--title">
-            <input type="email" name="email" Placeholder="Email" equired>
+<div class="login-container">
+    <h3>Login</h3>
+
+    <form action="/api/sessions/login" method="POST" class="login-form">
+
+        <div class="login-form-input">
+            <input type="email" name="email" placeholder="Email" required>
         </div>
 
-        <div class="upload__container--title">
-            <input type="password" name="password" Placeholder="Password" required>
+        <div class="login-form-input">
+            <input type="password" name="password" placeholder="Password" required>
         </div>
-        <div class="upload__container--button">
-            <button  type="submit">Login</button></form>
-            
-            <a href='/api/sessions/github' class="button-link">
-                <img src="/img/github-mark-white.png" alt="GitHub icon" class="icon">
-                 Login with GitHub
-            </a>
 
+        <div class="login-form-button">
+            <button type="submit">Login</button>
         </div>
-        <br> <p>No tienes un usuario? <a href="/register">Regístrate</a></p>    
-    </div>
+    </form>
 
+    <a href='/api/sessions/github' class="login-github-link">
+        <img src="/img/github-mark-white.png" alt="GitHub icon" class="icon">
+        Login with GitHub
+    </a>
 
-
+    <p>No tienes un usuario? <a href="/register">Regístrate</a></p>
+</div>

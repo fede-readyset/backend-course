@@ -17,6 +17,13 @@ class SocketService {
                 socket.emit("Productos", products);
             });
 
+
+            socket.on("init", async (data) => {
+                const messagesLogs = await MensajesModel.find().lean();
+                this.io.emit("messagesLogs", messagesLogs);
+
+            });
+
             socket.on("message", async (data) => {
                 const newMessage = new MensajesModel({
                     user: data.user,
@@ -35,6 +42,8 @@ class SocketService {
             });
         });
     }
+
+    
 }
 
 export default SocketService;

@@ -2,7 +2,8 @@ import passport from "passport";
 
 
 const auth = (req,res,next) => {
-    console.log("Pasé por el middleware pidiendo "+req.url);
+    passport.authenticate("github", {scope: ["user:email"]}) , async (req,res) =>{}
+    
     next();
 }
 
