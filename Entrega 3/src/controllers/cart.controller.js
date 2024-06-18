@@ -12,6 +12,7 @@ export class CartController {
         this.removeProductFromCart = this.removeProductFromCart.bind(this);
         this.changeProducts = this.changeProducts.bind(this);
         this.emptyCart = this.emptyCart.bind(this);
+        this.confirmPurchase = this.confirmPurchase.bind(this);
     }
 
     async getCart(req, res) {
@@ -60,9 +61,9 @@ export class CartController {
     }
 
     async addCart(req, res) {
-        const products = req.body.products;
+        //const products = req.body.products  ||[];
         try {
-            const cart = await this.cartService.createCart(products);
+            const cart = await this.cartService.createCart();
             res.status(200).json({
                 success: true,
                 message: "Carrito creado con éxito.",
@@ -146,7 +147,32 @@ export class CartController {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: "Fallo al actualizar el carrito.",
+                message: "Fallo al actualizar el carrito. Error interno del servidor.",
+                error: error.message
+            });
+        }
+    }
+
+
+    async confirmPurchase(req,res){
+        const cid = req.params.cid;
+        const purchaser = req.session.user.email;
+
+        try {
+            const result = await this.cartService.confirmPurchase(cid,purchaser);
+            
+            res.status(200).json({
+                success: true,
+                message: "Ticket generado correctamente.",
+                cid: cid,
+                result: result
+            });
+            req.io.emit("UpdateNeeded", true);
+
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Fallo al finalizar la compra. Error interno del servidor.",
                 error: error.message
             });
         }

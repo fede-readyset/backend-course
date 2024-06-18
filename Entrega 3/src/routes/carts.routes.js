@@ -8,13 +8,14 @@ const cartController = new CartController();
 
 
 // Defino las rutas 
-router.get("/carts", cartController.getCart);
-router.get("/carts/:cid", cartController.getCartById);
-router.post("/carts", cartController.addCart);
-router.post("/carts/:cid/product/:pid", cartController.addProductToCart);
-router.delete("/carts/:cid/product/:pid", cartController.removeProductFromCart);
-router.delete("/carts/:cid", cartController.emptyCart);
-router.put("/carts/:cid/",cartController.changeProducts);
+router.get("/", cartController.getCart);
+router.get("/:cid", cartController.getCartById);
+router.post("/", cartController.addCart);
+router.post("/:cid/product/:pid", cartController.addProductToCart);
+router.delete("/:cid/product/:pid", cartController.removeProductFromCart);
+router.delete("/:cid", cartController.emptyCart);
+router.put("/:cid",cartController.changeProducts);
+router.get("/:cid/purchase",cartController.confirmPurchase);
 
 // Exporto
 export default router;

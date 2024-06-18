@@ -7,36 +7,6 @@ const router = express.Router();
 // import { isValidPassword } from "../utils/hashbcrypt.js";
 import passport from "passport";
 
-// Login:
-/* router.post("/login", async (req,res)=>{
-    const {email, password} = req.body;
-    try {
-        const usuario = await UsuarioModel.findOne({email:email});
-
-        if( usuario ){ 
-            //Si encuentro el usuario valido el password con bcrypt
-            if(isValidPassword (password,usuario)) {
-
-                req.session.login = true;
-                req.session.user = {
-                    email: usuario.email,
-                    first_name: usuario.first_name,
-                    last_name: usuario.last_name,
-                    role: usuario.role
-                }
-                res.redirect("/");
-            } else {
-                res.status(401).send("Contraseña no válida.");
-            } 
-        } else {
-            res.status(404).send("Usuario no encontrado.");
-        }
-        
-    } catch (error) {
-        res.status(500).send("Error del servidor.")
-        
-    }
-}) */
 
 router.post("/login", passport.authenticate("login",{
     failureRedirect: "/api/sessions/faillogin"
@@ -56,7 +26,7 @@ router.post("/login", passport.authenticate("login",{
     }
     console.log("Session: " + req.session.user);
     req.session.login = true;
-    res.send("<p>Logueado con éxito. Redireccionando...</p>         <meta http-equiv='refresh' content='1;url=/profile'>");
+    res.send("<p>Logueado con éxito. Redireccionando...</p>         <meta http-equiv='refresh' content='1;url=/api/users/profile'>");
 
 })
 
@@ -68,7 +38,7 @@ router.get("/faillogin", async (req,res) =>{
 
 
 //Version para GitHub
-router.get("/github", passport.authenticate("github", {scope: ["user:email"]}), async (req,res) =>{})
+router.get("/github", passport.authenticate("github", {scope: ["user:email"]}) , async (req,res) =>{})
 
 
 router.get("/githubcallback", passport.authenticate("github", {
@@ -78,7 +48,7 @@ router.get("/githubcallback", passport.authenticate("github", {
     req.session.user = req.user;
     req.session.login = true;
 
-    res.redirect("/profile");
+    res.redirect("/api/users/profile");
 })
 
 // Logout:

@@ -12,12 +12,13 @@ import { Server } from "socket.io";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 
-// import { ProductManager } from "./controllers/ProductManager.js";
-// const PM = new ProductManager("./src/models/productos.json");
+
 
 // Defino variables e instancio clases
 const PUERTO = 8080;
 const app = express();
+
+
 
 // Importo las rutas
 import cartsRouter from "./routes/carts.routes.js";
@@ -31,6 +32,8 @@ import ProductosModel from "./models/productos.model.js";
 
 
 // Configuro Middlewares
+import auth from "./middlewares/auth.js";
+app.use("/", auth);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./src/public"));
@@ -47,12 +50,6 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Middleware para pasar el objeto io al router
-app.use((req, res, next) => {
-    req.io = io;
-    next();
-});
-
 
 // Configuro express-handlebars
 app.engine("handlebars", exphbs.engine());
@@ -62,8 +59,8 @@ app.set("views", "./src/views");
 // Configuro Rutas
 app.use("/", viewsRouter);
 app.use("/chat", chatRouter);
-app.use("/api", cartsRouter);
-app.use("/api", productsRouter);
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/sessions", sessionsRouter);
 
@@ -76,42 +73,8 @@ const httpServer = app.listen(PUERTO, () => {
 
 
 
-
-
-// Instancio io para chat
-const io = new Server(httpServer);
-
-// Establecemos la conexión
-io.on("connection", async (socket) => {
-    console.log("Nuevo usuario conectado");
-
-    socket.on("Request", async (data) => {
-        const products = await ProductosModel.find().lean();
-        socket.emit("Productos", products);
-    })
-
-    socket.on("message", async (data) => {
-        const newMessage = new MensajesModel();
-        newMessage.user = data.user;
-        newMessage.message = data.message;
-
-        const messages = await newMessage.save()
-            .then(message => console.log("Mensaje de chat recibido"))
-            .catch(error => console.log(error));
-
-        const messagesLogs = await MensajesModel.find().lean();
-        io.emit("messagesLogs", messagesLogs);
-    })
-});
-
-
-
-
-
-
-
-
-
-
+// Inicializo el servicio de socket.io
+import SocketService from "./services/socket.service.js";
+const socketService = new SocketService(httpServer);
 
 

@@ -10,7 +10,7 @@ import { createHash, isValidPassword } from "../utils/hashbcrypt.js";
 
 import { CartController } from "../controllers/cart.controller.js";
 
-const CM = new CartController();
+const cartController = new CartController();
 
 const LocalStrategy = local.Strategy;
 
@@ -31,7 +31,7 @@ const initializePassport = () => {
             }
 
             // Si no existe instancio un carrito y creo un registro nuevo
-            const response = await CM.addCart();
+            const response = await cartController.addCart(req,res);
             let nuevoUsuario = {
                 first_name,
                 last_name,
@@ -42,7 +42,6 @@ const initializePassport = () => {
                 cart: response.cart,
                 role:"user"
             }
-
             let resultado = await UsuarioModel.create(nuevoUsuario);
             return done(null, resultado);
             // Si todo está bien mandamos done con el usuario generado.
