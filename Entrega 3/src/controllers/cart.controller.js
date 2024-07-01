@@ -161,14 +161,13 @@ export class CartController {
 
         try {
             const result = await this.cartService.confirmPurchase(cid,purchaser);
-            
+            req.io.emit("UpdateNeeded", true);
             res.status(200).json({
                 success: true,
                 message: "Ticket generado correctamente.",
                 cid: cid,
                 result: result
             });
-            req.io.emit("UpdateNeeded", true);
 
         } catch (error) {
             res.status(500).json({

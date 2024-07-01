@@ -5,7 +5,7 @@
     <div class="cart-list-container">
         <div class="cart-list-header">
             <h3>Your cart:</h3>
-            
+
             <button class="btn clear-btn"> <span class="bi bi-trash"> Empty Cart</span></button>
         </div>
 
@@ -45,9 +45,9 @@
     <div class="cart-summary">
         <h3>Cart summary:</h3>
         <div class="total">
-            <p>Sub Total:  EUR <span id="total-provisional" class="total-provisional">€{{provTotal}}</span></p>
-            <p>Shipping :  Enter shipping address</span></p>
-            <p>Total:  EUR <span id="total-provisional" class="total-provisional">€{{provTotal}}</span></p>
+            <p>Sub Total: EUR <span id="total-provisional" class="total-provisional">€{{provTotal}}</span></p>
+            <p>Shipping : Enter shipping address</span></p>
+            <p>Total: EUR <span id="total-provisional" class="total-provisional">€{{provTotal}}</span></p>
 
 
         </div>
@@ -70,103 +70,143 @@
         const returnButton = document.querySelector('.return-btn');
         const quantityControls = document.querySelectorAll('.quantity-controls');
 
-        quantityControls.forEach(function (control) {
-            const decreaseBtn = control.querySelector('[data-action="decrease"]');
-            const increaseBtn = control.querySelector('[data-action="increase"]');
-            const updateBtn = control.querySelector('.update-btn');
-            const removeBtn = control.querySelector('.remove-btn');
-            const quantityInput = control.querySelector('.quantity-input');
-            const pid = decreaseBtn.getAttribute('data-index');
+        if (quantityControls.length > 0) {
+            quantityControls.forEach(function (control) {
+                const decreaseBtn = control.querySelector('[data-action="decrease"]');
+                const increaseBtn = control.querySelector('[data-action="increase"]');
+                const updateBtn = control.querySelector('.update-btn');
+                const removeBtn = control.querySelector('.remove-btn');
+                const quantityInput = control.querySelector('.quantity-input');
+                const pid = decreaseBtn.getAttribute('data-index');
 
-            decreaseBtn.addEventListener('click', function () {
-                let currentValue = parseInt(quantityInput.value);
-                if (currentValue > 1) {
-                    quantityInput.value = currentValue - 1;
-                }
-            });
+                decreaseBtn.addEventListener('click', function () {
+                    let currentValue = parseInt(quantityInput.value);
+                    if (currentValue > 1) {
+                        quantityInput.value = currentValue - 1;
+                    }
+                });
 
-            increaseBtn.addEventListener('click', function () {
-                let currentValue = parseInt(quantityInput.value);
-                quantityInput.value = currentValue + 1;
-            });
+                increaseBtn.addEventListener('click', function () {
+                    let currentValue = parseInt(quantityInput.value);
+                    quantityInput.value = currentValue + 1;
+                });
 
-            updateBtn.addEventListener('click', function () {
-                let updateArray = [ { product: {_id: pid}, qty: parseInt(quantityInput.value) }];
+                updateBtn.addEventListener('click', function () {
+                    let updateArray = [{ product: { _id: pid }, qty: parseInt(quantityInput.value) }];
 
-                let updateUrl = `/api/carts/{{session.user.cart}}`;
+                    let updateUrl = `/api/carts/{{session.user.cart}}`;
 
-                console.log(`Update URL: ${updateUrl}`);
-                console.log(`Update Array: ${updateArray}`)
-                console.log(`New Qty: ${updateArray[0].qty}`)
+                    console.log(`Update URL: ${updateUrl}`);
+                    console.log(`Update Array: ${updateArray}`)
+                    console.log(`New Qty: ${updateArray[0].qty}`)
 
-                 fetch(updateUrl,{ method:'PUT', body: updateArray})
-                    .then(response =>{
-                        if(!response.ok){
-                            throw new Error('Hubo un problema al actualizar el carrito.');
-                        }
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Cantidad actualizada',
-                            showConfirmButton:false,
-                            timer:2000
-                        });
+                    fetch(updateUrl, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updateArray)
                     })
- 
-            });
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Hubo un problema al actualizar el carrito.');
+                            }
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Cantidad actualizada',
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Error durante la actualización del carrito: ", error);
+                        });
+                });
 
-            removeBtn.addEventListener('click', function () {
-                console.log(`Eliminar el producto ${pid} del carrito`);
+                removeBtn.addEventListener('click', function () {
+                    console.log(`Eliminar el producto ${pid} del carrito`);
+                    // Implementación del código para eliminar el producto del carrito
+                });
+            })
+        };
 
-            });
-
-        });
-
-
-        confirmButton.addEventListener('click', function (){
-            var confirmPurchaseUrl="/api/carts/{{session.user.cart}}/purchase"
+        // Botón Checkout
+        confirmButton.addEventListener('click', function () {
+            var confirmPurchaseUrl = `/api/carts/{{session.user.cart}}/purchase`;
             fetch(confirmPurchaseUrl, {
                 method: 'GET'
             })
-            .then(response => {
-                if(!response.ok){
-                    throw new Error('Hubo un problema al iniciar el checkout.');
-                }
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Ticket de compra generado con éxito',
-                    showConfirmButton:false,
-                    timer:2000
+                .then(response => {
+                    if (!response.ok) {
+                        return Swal.fire({
+                            icon: 'error',
+                            title: 'Error al generar ticket de compra',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(() => {
+                            throw new Error('Hubo un problema al iniciar el checkout.');
+                        });
+                    } else {
+                        return Swal.fire({
+                            icon: 'success',
+                            title: 'Ticket de compra generado con éxito',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                })
+                .then(() => {
+                    setTimeout(function () { location.reload(); }, 2000);
+                })
+                .catch(error => {
+                    console.error("Error durante el proceso de checkout: ", error);
                 });
-                
-                setTimeout(function() { location.reload();}, 2000);                        
-            });
         });
 
-        clearButton.addEventListener('click', function (){
-            console.log("Limpiar carrito y volver al home")
+
+        // Bóton para vaciar el carrito
+        clearButton.addEventListener('click', function () {
+            console.log("Limpiar carrito y volver al home");
             Swal.fire({
                 title: "¿Estas seguro de querer vaciar el carrito?",
                 confirmButtonText: "Vaciar",
                 showCancelButton: true
-            }).then((result) =>{
-                if(result.isConfirmed) {
+            }).then((result) => {
+                if (result.isConfirmed) {
                     console.log("confirmed");
-                    cleanupUrl="/api/carts/{{session.user.cart}}"
-                    fetch(cleanupUrl,{
+                    var cleanupUrl = `/api/carts/{{session.user.cart}}`;
+                    fetch(cleanupUrl, {
                         method: 'DELETE'
-                    }).then(response=>{
-                        if(!response.ok){
-                            throw new Error ('Hubo un problema al vaciar el carrito.')
-                        } else {
-                            Swal.fire({title:"Carrito vaciado!",icon:"success",timer:2000});
-                            setTimeout(function() { location.reload();}, 2000);                        }
                     })
-                } 
-            })
-        })
+                        .then(response => {
+                            if (!response.ok) {
+                                return Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error al vaciar el carrito',
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                }).then(() => {
+                                    throw new Error('Hubo un problema al vaciar el carrito.');
+                                });
+                            } else {
+                                return Swal.fire({
+                                    title: "Carrito vaciado!",
+                                    icon: "success",
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                });
+                            }
+                        })
+                        .then(() => {
+                            setTimeout(function () { location.reload(); }, 2000);
+                        })
+                        .catch(error => {
+                            console.error('Error durante el vaciado del carrito:', error);
+                        });
+                }
+            });
+        });
 
-        returnButton.addEventListener('click',function(){
-            window.location.href="/";
+        returnButton.addEventListener('click', function () {
+            window.location.href = "/";
         })
     });
 </script>
