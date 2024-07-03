@@ -55,6 +55,10 @@ const logger = winston.createLogger({
 })
 
 
+
+
+
+
 // Creamos un middleware
 
 const addLogger = (req,res,next) =>{
