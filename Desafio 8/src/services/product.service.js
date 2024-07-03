@@ -1,4 +1,6 @@
 import ProductRepository from "../repositories/product.repository.js";
+import ProductosModel from "../models/productos.model.js";
+
 
 export default class ProductService {
     constructor() {

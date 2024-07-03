@@ -6,6 +6,7 @@ import MongoStore from "connect-mongo";
 import session from "express-session";
 import cookieParser from 'cookie-parser';
 
+
 // Importo conexión con database
 import "./database.js";
 
@@ -13,7 +14,8 @@ import "./database.js";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 
-
+// Importo manejador de errores:
+import errorHandler from "./middlewares/errors/index.js";
 
 // Defino variables e instancio clases
 const PUERTO = 8080;
@@ -28,8 +30,8 @@ import viewsRouter from "./routes/views.routes.js";
 import chatRouter from "./routes/chat.routes.js";
 import usersRouter from "./routes/user.routes.js";
 import sessionsRouter from "./routes/session.routes.js";
-import MensajesModel from "./models/mensajes.model.js";
-import ProductosModel from "./models/productos.model.js";
+//import MensajesModel from "./models/mensajes.model.js";
+//import ProductosModel from "./models/productos.model.js";
 
 
 // Configuro Middlewares
@@ -50,7 +52,7 @@ app.use(session({
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(errorHandler);
 
 // Configuro express-handlebars
 app.engine("handlebars", exphbs.engine());
@@ -65,7 +67,7 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/sessions", sessionsRouter);
 
-
+app.use(errorHandler);
 
 // Listener
 const httpServer = app.listen(PUERTO, () => {
@@ -77,5 +79,11 @@ const httpServer = app.listen(PUERTO, () => {
 // Inicializo el servicio de socket.io
 import SocketService from "./services/socket.service.js";
 const socketService = new SocketService(httpServer);
+
+// Middleware para inyectar io en req
+/* app.use((req, res, next) => {
+    req.io = io;
+    next();
+}); */
 
 

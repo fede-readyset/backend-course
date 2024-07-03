@@ -7,6 +7,8 @@ import ProductController from "../controllers/product.controller.js";
 const productController = new ProductController();
 
 // Defino las rutas
+ 
+// Desafío 8
 router.get("/", productController.getProducts);
 router.post("/", productController.addProduct);
 router.get("/:pid", productController.getProductById);

@@ -45,9 +45,7 @@ router.get("/login", viewsController.renderLogin);
 router.get("/register", viewsController.renderRegister);
 router.get("/newproduct", checkUserRole(['admin']), viewsController.renderNewProductForm);
 router.get("/accessdenied", viewsController.renderAccessDenied);
-
-
-
+router.get("/mockingproducts", viewsController.mockingProducts);
 
 
 // Ruta para cargar nuevos productos

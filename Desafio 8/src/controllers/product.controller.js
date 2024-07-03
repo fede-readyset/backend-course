@@ -1,16 +1,16 @@
 import ProductService from "../services/product.service.js";
 
 class ProductController {
-      constructor() {
+    constructor() {
         this.productService = new ProductService();
-         
+
         // Binding methods to the current instance to preserve 'this' context (Esta sección fue agregada por recomendación de ChatGPT:)
         this.getProducts = this.getProducts.bind(this);
         this.getProductById = this.getProductById.bind(this);
         this.addProduct = this.addProduct.bind(this);
         this.updateProduct = this.updateProduct.bind(this);
         this.deleteProduct = this.deleteProduct.bind(this);
-    } 
+    }
 
     async getProducts(req, res) {
         try {
@@ -65,6 +65,7 @@ class ProductController {
     }
 
     async addProduct(req, res) {
+        console.log(req.body)
         try {
             const newProduct = await this.productService.addProduct(req.body);
             res.json({
@@ -72,7 +73,12 @@ class ProductController {
                 message: "Producto agregado con éxito",
                 id: newProduct._id
             });
-            req.io.emit("UpdateNeeded", true);
+            
+            if (req.io) {
+                req.io.emit("UpdateNeeded", true);
+            } else {
+                console.error("Socket.IO no está definido en req");
+            }
         } catch (error) {
             res.status(500).json({
                 success: false,
@@ -80,6 +86,7 @@ class ProductController {
                 error: error.message
             });
         }
+
     }
 
     async updateProduct(req, res) {
@@ -131,6 +138,8 @@ class ProductController {
             });
         }
     }
+
+
 }
 
 export default ProductController;

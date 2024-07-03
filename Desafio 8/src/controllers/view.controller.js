@@ -7,6 +7,9 @@ const cartRepository = new CartRepository();
 import CartService from "../services/cart.service.js";
 const cartService = new CartService();
 
+import { generateProduct } from "../utils/utils.js"; // Mocking
+
+
 class ViewsController {
 
     // Vista de productos
@@ -149,6 +152,27 @@ class ViewsController {
         res.render("accessDenied");
     }
 
+
+
+    async mockingProducts(req, res) {
+        try {
+            let products = [];
+            for (let i=0; i<100;i++) {
+                products.push(generateProduct());
+            } 
+            
+
+            res.render("products", {
+                products: products
+            });
+        } catch (error) {
+            res.status(500).send({
+                success: false,
+                message: "Fallo al generar productos fake",
+                error: error.message
+            });
+        }
+    }
 }
 
 export default ViewsController;
