@@ -30,6 +30,7 @@ export class CartController {
                 message: "Fallo al obtener listado de carritos",
                 error: error.message
             });
+            req.logger.error("Fallo al finalizar la compra. Error interno del servidor.");
         }
     }
 
@@ -57,6 +58,7 @@ export class CartController {
                 message: "Error del servidor al buscar carrito especificado",
                 error: error.message
             });
+            req.logger.error("Error del servidor al buscar carrito especificado");
         }
     }
 
@@ -75,6 +77,8 @@ export class CartController {
                 message: "Fallo al crear el carrito, error interno del servidor.",
                 error: error.message
             });
+            req.logger.error("Fallo al crear el carrito, error interno del servidor.");
+
         }
     }
 
@@ -94,6 +98,7 @@ export class CartController {
                 message: "Error del servidor. Fallo al agregar el producto al carrito",
                 error: error.message
             });
+            req.logger.error("Error del servidor. Fallo al agregar el producto al carrito");
         }
     }
 
@@ -113,6 +118,8 @@ export class CartController {
                 message: "Fallo al eliminar el producto del carrito",
                 error: error.message
             });
+            req.logger.error("Fallo al eliminar el producto del carrito");
+
         }
     }
 
@@ -131,6 +138,8 @@ export class CartController {
                 message: "Error interno. Fallo al eliminar el producto del carrito",
                 error: error.message
             });
+            req.logger.error("Error interno. Fallo al eliminar el producto del carrito");
+
         }
     }
 
@@ -150,6 +159,7 @@ export class CartController {
                 message: "Fallo al actualizar el carrito. Error interno del servidor.",
                 error: error.message
             });
+            req.logger.error("Error interno. Fallo al eliminar el producto del carrito");
         }
     }
 
@@ -175,6 +185,8 @@ export class CartController {
                 message: "Fallo al finalizar la compra. Error interno del servidor.",
                 error: error.message
             });
+            req.logger.error("Fallo al finalizar la compra. Error interno del servidor.");
+
         }
     }
 }

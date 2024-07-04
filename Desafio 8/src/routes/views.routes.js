@@ -8,6 +8,9 @@ import ProductosModel from "../models/productos.model.js";
 import CarritosModel from "../models/carritos.model.js";
 import bodyParser from "body-parser";
 import multer from "multer";
+import CustomError from "../services/errors/CustomError.js";
+import generateErrorInfo from "../services/errors/info.js";
+import EErrors from "../services/errors/info.js";
 
 const router = express.Router();
 
@@ -53,6 +56,14 @@ router.post("/newproduct", multer({storage}).single("image"), async (req,res) =>
     if(!req.session.login) return res.redirect("/login");
 
     try {
+        if (!req.body || !req.body.title || !req.body.price || !req.body.code || !req.body.stock) {
+            throw CustomError.createError({
+                name: "New product",
+                cause: generateErrorInfo({}),
+                mensaje: "Error al cargar el nuevo producto.",
+                codigo: EErrors.INVALID_TYPES_ERROR
+            })
+        }
         const nuevoProducto = new ProductosModel();
         nuevoProducto.title = req.body.title;
         nuevoProducto.description = req.body.description;
@@ -67,11 +78,21 @@ router.post("/newproduct", multer({storage}).single("image"), async (req,res) =>
         await nuevoProducto.save();
         res.redirect("/");
     } catch (error) {
+
         res.status(500).send({message: `Error en el servidor: ${error}`}); 
     }
 }) 
 
 
+// Ruta para testear el logger Desafio 9
+router.get("/loggertest", (req, res) => {
+    req.logger.http("Mensaje HTTP");
+    req.logger.info("Mensaje INFO");
+    req.logger.warning("Mensaje WARN");
+    req.logger.error("Mensaje ERROR");
+    res.send("Logs Generados")
+
+})
 
 
 // Exporto

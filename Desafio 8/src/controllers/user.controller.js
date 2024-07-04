@@ -43,6 +43,7 @@ class UserController {
 
     failedRegister(req, res) {
         res.send("Registro fallido");
+        req.logger.error("Registro fallido")
     }
 
 }

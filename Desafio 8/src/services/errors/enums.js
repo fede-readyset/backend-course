@@ -1,5 +1,6 @@
-export const EErrors = {
-    ROUTE_ERRO: 1, 
-    INVALID_TYPE: 2,
-    BD_ERROR: 3
-}
+const EErrors = {
+    INVALID_TYPES_ERROR: "INVALID_TYPES_ERROR",
+    MISSING_DATA_ERROR: "MISSING_DATA_ERROR",
+    AUTHENTICATION_ERROR: "AUTHENTICATION_ERROR",
+    // Agregar más códigos de error según sea necesario
+};

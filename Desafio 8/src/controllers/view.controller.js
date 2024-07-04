@@ -53,8 +53,9 @@ class ViewsController {
         } catch (error) {
             res.status(500).json({
                 status: 'error',
-                error: "Error interno del servidor"
+                error: "Error interno del servidor al renderizar los productos"
             });
+            req.logger.error("Error interno del servidor al renderizar los productos");
         }
     }
 
@@ -104,6 +105,7 @@ class ViewsController {
                 error: "Error interno del servidor",
                 payload: error
             });
+            req.logger.error("Error interno del servidor al renderizar el carrito");
         }
     }
 
@@ -171,6 +173,8 @@ class ViewsController {
                 message: "Fallo al generar productos fake",
                 error: error.message
             });
+            req.logger.error("Fallo al generar productos fake");
+
         }
     }
 }

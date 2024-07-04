@@ -17,6 +17,10 @@ import initializePassport from "./config/passport.config.js";
 // Importo manejador de errores:
 import errorHandler from "./middlewares/errors/index.js";
 
+// Importo logger:
+import addLogger from "./utils/logger.js";
+
+
 // Defino variables e instancio clases
 const PUERTO = 8080;
 const app = express();
@@ -53,6 +57,7 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(errorHandler);
+app.use(addLogger);
 
 // Configuro express-handlebars
 app.engine("handlebars", exphbs.engine());
@@ -67,10 +72,13 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/sessions", sessionsRouter);
 
+
+
 app.use(errorHandler);
 
 // Listener
 const httpServer = app.listen(PUERTO, () => {
+    
     console.log(`Escuchando en el http://localhost:${PUERTO}`);
 });
 
