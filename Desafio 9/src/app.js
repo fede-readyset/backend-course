@@ -20,6 +20,11 @@ import errorHandler from "./middlewares/errors/index.js";
 // Importo logger:
 import addLogger from "./utils/logger.js";
 
+// Importo Swagger para documentación:
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from "swagger-ui-express"; 
+import specs from "./config/swagger.config.js";
+
 
 // Defino variables e instancio clases
 const PUERTO = 8080;
@@ -71,7 +76,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/sessions", sessionsRouter);
-
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 
 app.use(errorHandler);

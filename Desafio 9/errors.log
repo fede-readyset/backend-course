@@ -1,0 +1,8 @@
+{"level":"error","message":"Mensaje ERROR"}
+{"level":"error","message":"Mensaje ERROR"}
+{"level":"error","message":"Mensaje ERROR"}
+{"level":"error","message":"Error interno del servidor al renderizar el carrito"}
+{"level":"error","view":{"defaultEngine":"handlebars","ext":".handlebars","name":"sendconfirm","root":"./src/views"}}
+{"level":"error","view":{"defaultEngine":"handlebars","ext":".handlebars","name":"sendconfirm","root":"./src/views"}}
+{"level":"error","view":{"defaultEngine":"handlebars","ext":".handlebars","name":"sendconfirm","root":"./src/views"}}
+{"level":"error","view":{"defaultEngine":"handlebars","ext":".handlebars","name":"sendconfirm","root":"./src/views"}}
