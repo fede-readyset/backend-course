@@ -123,12 +123,12 @@ class ProductController {
         try {
             const deletedProduct = await this.productService.deleteProduct(req.params.pid);
             if (deletedProduct) {
-                res.json({
+                res.status(200).json({
                     success: true,
                     message: "Producto eliminado con éxito",
                     id: req.params.pid
                 });
-                req.io.emit("UpdateNeeded", true);
+                //req.io.emit("UpdateNeeded", true);
             } else {
                 res.status(404).json({
                     success: false,

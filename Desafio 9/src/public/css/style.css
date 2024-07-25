@@ -811,3 +811,48 @@ body {
 .login-register-message a:hover {
     text-decoration: underline; /* Subrayar el enlace al pasar el mouse */
 }
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-container form {
+    margin: 0 5px;
+}
+
+.btn {
+    display: inline-block;
+}
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}

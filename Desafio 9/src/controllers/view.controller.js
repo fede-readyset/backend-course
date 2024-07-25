@@ -30,12 +30,12 @@ class ViewsController {
                 const { ...rest } = product.toObject();
                 return rest;
             })
-
             const session = {
                 loggedIn: req.session.login,
                 user: req.session.user
             };
-
+            // console.log(session);
+            // console.log(products);
             // Envio la data para ser renderizada           
             res.render("products", {
                 products: products,
@@ -110,14 +110,16 @@ class ViewsController {
     }
 
     // Vista de nuevo producto
-    async renderNewProductForm(req,res) {
-        if(!req.session.login) return res.redirect("/login");
+    async renderNewProductForm(req, res) {
+        if (!req.session.login) return res.redirect("/login");
 
+        let owner = req.session.user.role === "admin" ? "admin" : req.session.user.email; 
         const session = {
             loggedIn: req.session.login,
-            user: req.session.user
+            user: req.session.user,
+            owner
         };
-        res.render("newProduct",{session});
+        res.render("newProduct", { session });
     }
 
 
@@ -149,7 +151,7 @@ class ViewsController {
 
     }
 
-    async renderAccessDenied(req,res){
+    async renderAccessDenied(req, res) {
 
         res.render("accessDenied");
     }
@@ -159,10 +161,10 @@ class ViewsController {
     async mockingProducts(req, res) {
         try {
             let products = [];
-            for (let i=0; i<100;i++) {
+            for (let i = 0; i < 100; i++) {
                 products.push(generateProduct());
-            } 
-            
+            }
+
 
             res.render("products", {
                 products: products
@@ -182,15 +184,15 @@ class ViewsController {
 
 
     // Tercer intergradora:
-    async renderResetPassword(req,res) {
+    async renderResetPassword(req, res) {
         res.render("resetpass");
     }
 
-    async renderCambioPassword(req,res) {
+    async renderCambioPassword(req, res) {
         res.render("changepass");
     }
 
-    async renderConfirmacion(req,res) {
+    async renderConfirmacion(req, res) {
         res.render("sendconfirm");
     }
 }

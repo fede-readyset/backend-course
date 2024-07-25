@@ -25,17 +25,23 @@ export class CartService {
         return await this.cartRepository.save(newCart);
     }
 
-    async addProductToCart(cartId, productId) {
+    async addProductToCart(cartId, productId, buyerEmail) {
 
+        // Me traigo el carrito buscado del repository
         const cart = await CarritosModel.findById(cartId);
         if (!cart) throw new Error("Carrito inexistente");
 
+        // Me traigo el producto buscado del repository
         const product = await this.productRepository.findById(productId);
         if (!product) throw new Error("Producto inexistente");
+        
+        // Validación extra para que productos propios no se agreguen al carrito
+        if(product.owner===buyerEmail) throw new Error("No se puede agregar al carrito productos propios")
 
-
+        // Busco si el producto ya está en el carrito
         const productIndex = cart.products.findIndex(p => String(p.product) === productId);
 
+        // Defino la cantidad final (si ya está sumo 1 a la qty, si no está lo agrego)
         let qty = 1;
         if (productIndex !== -1) {
             qty = cart.products[productIndex].qty += qty;
