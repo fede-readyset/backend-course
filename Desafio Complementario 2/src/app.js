@@ -1,7 +1,7 @@
 // Importo librerías 
 import express from "express";
 import exphbs from "express-handlebars";
-
+import Handlebars from 'handlebars';
 import MongoStore from "connect-mongo";
 import session from "express-session";
 import cookieParser from 'cookie-parser';
@@ -20,6 +20,11 @@ import errorHandler from "./middlewares/errors/index.js";
 // Importo logger:
 import addLogger from "./utils/logger.js";
 
+// Importo Swagger para documentación:
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUiExpress from "swagger-ui-express";
+import specs from "./config/swagger.config.js";
+
 
 // Defino variables e instancio clases
 const PUERTO = 8080;
@@ -34,8 +39,6 @@ import viewsRouter from "./routes/views.routes.js";
 import chatRouter from "./routes/chat.routes.js";
 import usersRouter from "./routes/user.routes.js";
 import sessionsRouter from "./routes/session.routes.js";
-//import MensajesModel from "./models/mensajes.model.js";
-//import ProductosModel from "./models/productos.model.js";
 
 
 // Configuro Middlewares
@@ -59,8 +62,27 @@ app.use(passport.session());
 app.use(errorHandler);
 app.use(addLogger);
 
+// Registro el helper `eq`
+Handlebars.registerHelper('eq', function (a, b) {
+    return a === b;
+});
+// Helper or: para evaluar si al menos una de las dos condiciones es verdadera
+Handlebars.registerHelper('or', function (a, b) {
+    return a || b;
+});
+
+// Helper and: para evaluar si al menos una de las dos condiciones es verdadera
+Handlebars.registerHelper('and', function (a, b) {
+    return a && b;
+});
+
+
 // Configuro express-handlebars
-app.engine("handlebars", exphbs.engine());
+const hbs = exphbs.create({
+    handlebars: Handlebars
+});
+
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 app.set("views", "./src/views");
 
@@ -71,14 +93,14 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/sessions", sessionsRouter);
-
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 
 app.use(errorHandler);
 
 // Listener
 const httpServer = app.listen(PUERTO, () => {
-    
+
     console.log(`Escuchando en el http://localhost:${PUERTO}`);
 });
 

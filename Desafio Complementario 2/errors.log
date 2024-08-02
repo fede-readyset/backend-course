@@ -1,0 +1,24 @@
+{"level":"error","message":"Mensaje ERROR"}
+{"level":"error","message":"Mensaje ERROR"}
+{"level":"error","message":"Mensaje ERROR"}
+{"level":"error","message":"Error interno del servidor al renderizar el carrito"}
+{"level":"error","view":{"defaultEngine":"handlebars","ext":".handlebars","name":"sendconfirm","root":"./src/views"}}
+{"level":"error","view":{"defaultEngine":"handlebars","ext":".handlebars","name":"sendconfirm","root":"./src/views"}}
+{"level":"error","view":{"defaultEngine":"handlebars","ext":".handlebars","name":"sendconfirm","root":"./src/views"}}
+{"level":"error","view":{"defaultEngine":"handlebars","ext":".handlebars","name":"sendconfirm","root":"./src/views"}}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"level":"error","message":"Missing helper: \"eq\"","name":"Error"}
+{"column":7,"endColumn":11,"endLineNumber":5,"level":"error","lineNumber":5,"message":"each doesn't match if - 5:7","name":"Error"}
+{"column":15,"endColumn":21,"endLineNumber":23,"level":"error","lineNumber":23,"message":"unless doesn't match if - 23:15","name":"Error"}
+{"level":"error","message":"Error del servidor. Fallo al agregar el producto al carrito"}

@@ -46,7 +46,7 @@ router.get("/carts/:cid?", viewsController.renderCart);
 router.get("/realtimeproducts", checkUserRole(['admin']), viewsController.renderRealTimeProducts);
 router.get("/login", viewsController.renderLogin);
 router.get("/register", viewsController.renderRegister);
-router.get("/newproduct", checkUserRole(['admin']), viewsController.renderNewProductForm);
+router.get("/newproduct", checkUserRole(['admin','premium']), viewsController.renderNewProductForm);
 router.get("/accessdenied", viewsController.renderAccessDenied);
 router.get("/mockingproducts", viewsController.mockingProducts);
 
@@ -60,10 +60,12 @@ router.post("/newproduct", multer({storage}).single("image"), async (req,res) =>
             throw CustomError.createError({
                 name: "New product",
                 cause: generateErrorInfo({}),
-                mensaje: "Error al cargar el nuevo producto.",
+                mensaje: "Error al cargar el nuevo producto. Faltan Datos",
                 codigo: EErrors.INVALID_TYPES_ERROR
             })
         }
+
+
         const nuevoProducto = new ProductosModel();
         nuevoProducto.title = req.body.title;
         nuevoProducto.description = req.body.description;
@@ -74,6 +76,7 @@ router.post("/newproduct", multer({storage}).single("image"), async (req,res) =>
         nuevoProducto.stock= req.body.stock;
         nuevoProducto.status = req.body.status === 'on';
         nuevoProducto.thumbnail = "/img/"+ req.file.filename;
+        nuevoProducto.owner = req.body.owner;
 
         await nuevoProducto.save();
         res.redirect("/");

@@ -84,8 +84,9 @@ export class CartController {
 
     async addProductToCart(req, res) {
         const { cid, pid } = req.params;
+        const buyerEmail=req.session.user.email;
         try {
-            await this.cartService.addProductToCart(cid, pid);
+            await this.cartService.addProductToCart(cid, pid, buyerEmail);
             res.status(200).json({
                 success: true,
                 message: "Producto añadido al carrito correctamente",
