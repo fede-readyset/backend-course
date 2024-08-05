@@ -22,7 +22,7 @@ export class CartController {
             res.status(200).json({
                 success: true,
                 message: "Listado de carritos:",
-                carts: carts
+                payload: carts
             });
         } catch (error) {
             res.status(500).json({
@@ -38,27 +38,26 @@ export class CartController {
         const cid = req.params.cid;
         try {
             const cart = await this.cartService.getCartById(cid);
-            if(cart){
-                res.status(200).json({
-                    success: true,
-                    message: "Carrito encontrado con éxito",
-                    cart: cart
-                });
-            } else {
+            res.status(200).json({
+                success: true,
+                message: "Carrito encontrado con éxito",
+                payload: cart
+            });
+        } catch (error) {
+            if (error.statusCode === 404) {
                 res.status(404).json({
                     success: false,
-                    message: "Carrito no encontrado.",
-                    cid: cid
+                    message: error.message,
+                    payload: cid
                 });
+            } else {
+                res.status(500).json({
+                    success: false,
+                    message: "Error del servidor al buscar carrito especificado",
+                    error: error.message
+                });
+                req.logger.error("Error del servidor al buscar carrito especificado", error);
             }
-            
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: "Error del servidor al buscar carrito especificado",
-                error: error.message
-            });
-            req.logger.error("Error del servidor al buscar carrito especificado");
         }
     }
 
@@ -69,7 +68,7 @@ export class CartController {
             res.status(200).json({
                 success: true,
                 message: "Carrito creado con éxito.",
-                cart: cart
+                payload: cart
             });
         } catch (error) {
             res.status(500).json({
@@ -114,13 +113,24 @@ export class CartController {
                 pid: pid
             });
         } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: "Fallo al eliminar el producto del carrito",
-                error: error.message
-            });
-            req.logger.error("Fallo al eliminar el producto del carrito");
+            console.log(error)
 
+            if (error.message === "Carrito inexistente" || error.message === "Producto inexistente en el carrito") {
+                res.status(404).json({
+                    success: false,
+                    message: error.message,
+                    cid: cid,
+                    pid: pid
+                });
+            } else {
+                // Para otros errores, devuelve un estado 500
+                res.status(500).json({
+                    success: false,
+                    message: "Fallo al eliminar el producto del carrito",
+                    error: error.message
+                });
+                req.logger.error("Fallo al eliminar el producto del carrito", error);
+            }
         }
     }
 
@@ -134,13 +144,21 @@ export class CartController {
                 cid: cid
             });
         } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: "Error interno. Fallo al eliminar el producto del carrito",
-                error: error.message
-            });
-            req.logger.error("Error interno. Fallo al eliminar el producto del carrito");
-
+            if (error.message === "Carrito inexistente") {
+                res.status(404).json({
+                    success: false,
+                    message: error.message,
+                    cid: cid
+                });
+            } else {
+                // Para otros errores, devuelve un estado 500
+                res.status(500).json({
+                    success: false,
+                    message: "Error interno. Fallo al vaciar el carrito",
+                    error: error.message
+                });
+                req.logger.error("Error interno. Fallo al vaciar el carrito", error);
+            }
         }
     }
 

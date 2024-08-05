@@ -24,7 +24,11 @@ router.post("/login", passport.authenticate("login",{
     }
     console.log("Session: " + req.session.user);
     req.session.login = true;
-    res.send("<p>Logueado con éxito. Redireccionando...</p>         <meta http-equiv='refresh' content='1;url=/api/users/profile'>");
+    res.status(200).json({
+        success:true,
+        message:"Login exitoso"
+    });
+    //send("<p>Logueado con éxito. Redireccionando...</p>         <meta http-equiv='refresh' content='1;url=/api/users/profile'>");
 
 })
 

@@ -4,7 +4,7 @@ info:
   description: API para la gestión de carritos de compras
   version: 1.0.0
 paths:
-  /carts:
+  /api/carts:
     get:
       tags:
         - Carts
@@ -34,7 +34,7 @@ paths:
         '500':
           description: Fallo al crear el carrito
 
-  /carts/{cid}:
+  /api/carts/{cid}:
     get:
       tags:
         - Carts
@@ -100,7 +100,7 @@ paths:
         '500':
           description: Fallo al vaciar el carrito
 
-  /carts/{cid}/product/{pid}:
+  /api/carts/{cid}/product/{pid}:
     post:
       tags:
         - Carts
@@ -146,7 +146,7 @@ paths:
         '500':
           description: Fallo al eliminar el producto del carrito
 
-  /carts/{cid}/purchase:
+  /api/carts/{cid}/purchase:
     get:
       tags:
         - Carts

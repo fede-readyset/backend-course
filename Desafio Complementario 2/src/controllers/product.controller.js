@@ -23,7 +23,7 @@ class ProductController {
                 res.json({
                     success: true,
                     message: "Listado de productos:",
-                    products: products
+                    payload: products
                 });
             } else {
                 res.status(404).json({
@@ -49,7 +49,7 @@ class ProductController {
                 res.json({
                     success: true,
                     message: "Producto encontrado con éxito",
-                    product: product
+                    payload: product
                 });
             } else {
                 res.status(404).json({
@@ -83,12 +83,21 @@ class ProductController {
                 req.logger.error("Socket.IO no está definido en req")
             }
         } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: "Fallo al agregar producto",
-                error: error.message
-            });
-            req.logger.error("Fallo al agregar producto");
+            if (error.name ==='ValidationError') {
+                res.status(400).json({
+                    success: false,
+                    message: "Error de validación: " + error.message
+                });
+            } else {
+                req.logger.error("Fallo al agregar producto");
+                if (!res.headersSent) {
+                    res.status(500).json({
+                        success: false,
+                        message: "Fallo al agregar producto",
+                        error: error.message
+                    });
+                }
+            }
         }
 
     }
@@ -102,7 +111,11 @@ class ProductController {
                     message: "Producto actualizado con éxito",
                     id: req.params.pid
                 });
-                req.io.emit("UpdateNeeded", true);
+                try {
+                    req.io.emit("UpdateNeeded", true);
+                } catch (emitError) {
+                    req.logger.error("Error emitting update event", emitError);
+                }
             } else {
                 res.status(404).json({
                     success: false,
@@ -110,12 +123,15 @@ class ProductController {
                 });
             }
         } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: "Fallo al actualizar producto",
-                error: error.message
-            });
             req.logger.error("Fallo al actualizar producto");
+            if (!res.headersSent) {
+
+                res.status(500).json({
+                    success: false,
+                    message: "Fallo al actualizar producto",
+                    error: error.message
+                });
+            }
         }
     }
 
@@ -132,7 +148,7 @@ class ProductController {
             } else {
                 res.status(404).json({
                     success: false,
-                    message: "No se encontró el producto a eliminar"
+                    message: "Producto no encontrado"
                 });
             }
         } catch (error) {

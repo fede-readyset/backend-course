@@ -11,17 +11,23 @@ class CartRepository {
             const carrito = await CarritosModel.findById(id).populate("products.product").lean();
 
             if (!carrito) {
-                throw new Error(`No existe un carrito con id ${id}`);
+                // Lanza un error con un tipo específico o un mensaje que puedes identificar
+                const error = new Error(`Carrito no encontrado.`);
+                error.statusCode = 404;  // Añade un código de estado específico
+                throw error;
             }
             return carrito;
         } catch (error) {
-            throw new Error("Error listando elementos del carrito");
+            if (!error.statusCode) {
+                error.statusCode = 500;
+            }
+            throw error;
         }
     }
 
 
     async save(cart) {
-        return await cart.save;
+        return await cart.save();
     }
 
     async updateById(id, updateData) {

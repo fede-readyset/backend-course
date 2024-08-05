@@ -21,7 +21,6 @@ export class CartService {
     // async createCart(products) {
     async createCart() {
         const newCart = new CarritosModel();
-        //newCart.products = products;
         return await this.cartRepository.save(newCart);
     }
 
@@ -69,7 +68,16 @@ export class CartService {
         return await this.cartRepository.save(cart);
     }
 
+    /* async emptyCart(cartId) {
+        return await this.cartRepository.updateById(cartId, { $set: { products: [] } });
+    } */
+
     async emptyCart(cartId) {
+        // Busca el carrito por ID para verificar si existe
+        const cart = await CarritosModel.findById(cartId);
+        if (!cart) throw new Error("Carrito inexistente");
+    
+        // Vacía los productos del carrito
         return await this.cartRepository.updateById(cartId, { $set: { products: [] } });
     }
 
