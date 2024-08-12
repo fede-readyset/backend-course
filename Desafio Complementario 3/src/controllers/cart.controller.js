@@ -87,7 +87,7 @@ export class CartController {
             return {
                 success: true,
                 message: "Carrito creado con éxito.",
-                cart
+                payload: cart
             };
         } catch (error) {
             console.error("Fallo al crear el carrito, error interno del servidor:", error.message);

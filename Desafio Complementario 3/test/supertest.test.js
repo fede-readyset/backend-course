@@ -133,7 +133,7 @@ describe("Testing de la app CoderMart", () => {
             const { statusCode, body } = await requester.get(`/api/carts/${nonExistantCartId}`);
             expect(statusCode).to.equal(404);
             expect(body).to.have.property("success").that.equals(false);
-            expect(body).to.have.property("message").that.equals("Carrito no encontrado.");
+            expect(body).to.have.property("messa|ge").that.equals("Carrito no encontrado.");
         });
 
         // Test para agregar un nuevo carrito
@@ -255,12 +255,11 @@ describe("Testing de la app CoderMart", () => {
         }); */
     
         // Iniciar sesión con el usuario creado
-        it("Users Test 2: El endpoint POST /api/sessions/login debe permitir iniciar sesión con credenciales válidas", async () => {
-          const { statusCode, body } = await requester.post("/api/sessions/login").send({
+        it("Users Test 2: El endpoint POST /api/users/login debe permitir iniciar sesión con credenciales válidas", async () => {
+          const { statusCode, body } = await requester.post("/api/users/login").send({
             email: testUser.email,
             password: testUser.password,
           });
-          console.log(body);
           expect(statusCode).to.equal(200);
           expect(body).to.have.property("success").that.equals(true);
           expect(body).to.have.property("message").that.contains("Login exitoso");
