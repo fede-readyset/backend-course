@@ -248,3 +248,37 @@
 {"level":"error","message":"Error emitting update event Cannot read properties of undefined (reading 'emit')","stack":"TypeError: Cannot read properties of undefined (reading 'emit')\n    at ProductController.updateProduct (file:///Users/federicotorres/Backend-course/backend-course/Desafio%20Complementario%202/src/controllers/product.controller.js:115:28)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
 {"level":"error","message":"Socket.IO no está definido en req"}
 {"level":"error","message":"Error emitting update event Cannot read properties of undefined (reading 'emit')","stack":"TypeError: Cannot read properties of undefined (reading 'emit')\n    at ProductController.updateProduct (file:///Users/federicotorres/Backend-course/backend-course/Desafio%20Complementario%202/src/controllers/product.controller.js:115:28)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"level":"error"}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"DNI","level":"error","message":"Unexpected field","name":"MulterError","storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"DNI","level":"error","message":"Unexpected field","name":"MulterError","storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"DNI","level":"error","message":"Unexpected field","name":"MulterError","storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"DNI","level":"error","message":"Unexpected field","name":"MulterError","storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"DNI","level":"error","message":"Unexpected field","name":"MulterError","storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"DNI","level":"error","message":"Unexpected field","name":"MulterError","storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"DNI","level":"error","message":"Unexpected field","name":"MulterError","storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"documents","level":"error","message":"Unexpected field","name":"MulterError","storageErrors":[]}
+{"level":"error","message":"Socket.IO no está definido en req"}
+{"level":"error","message":"Error emitting update event Cannot read properties of undefined (reading 'emit')","stack":"TypeError: Cannot read properties of undefined (reading 'emit')\n    at ProductController.updateProduct (file:///Users/federicotorres/Backend-course/backend-course/Desafio%20Complementario%203/src/controllers/product.controller.js:115:28)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+{"level":"error","message":"Socket.IO no está definido en req"}
+{"level":"error","message":"Error emitting update event Cannot read properties of undefined (reading 'emit')","stack":"TypeError: Cannot read properties of undefined (reading 'emit')\n    at ProductController.updateProduct (file:///Users/federicotorres/Backend-course/backend-course/Desafio%20Complementario%203/src/controllers/product.controller.js:115:28)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}

@@ -260,6 +260,7 @@ describe("Testing de la app CoderMart", () => {
             email: testUser.email,
             password: testUser.password,
           });
+          console.log(body);
           expect(statusCode).to.equal(200);
           expect(body).to.have.property("success").that.equals(true);
           expect(body).to.have.property("message").that.contains("Login exitoso");

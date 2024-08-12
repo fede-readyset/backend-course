@@ -32,7 +32,7 @@ const initializePassport = () => {
             }
 
             // Si no existe instancio un carrito y creo un registro nuevo
-            const response = await cartController.addCart(req,res);
+            const response = await cartController.addCart(req, res);
             let nuevoUsuario = {
                 first_name,
                 last_name,
@@ -41,7 +41,7 @@ const initializePassport = () => {
                 password: createHash(password),
                 avatar_url: "/img/generic_avatar.jpeg",
                 cart: response.cart,
-                role:"user"
+                role: "user"
             }
             let resultado = await UsuarioModel.create(nuevoUsuario);
             return done(null, resultado);
@@ -68,7 +68,7 @@ const initializePassport = () => {
             if (!isValidPassword(password, usuario)) {
                 return done(null, false);
             }
-            
+
             return done(null, usuario);
         } catch (error) {
             return done(error);
@@ -94,28 +94,43 @@ const initializePassport = () => {
         clientSecret: configObject.github_client_secret,
         callbackURL: "http://localhost:8080/api/sessions/githubcallback"
     }, async (accessToken, refreshToken, profile, done) => {
-        try {
-            let usuario = await UsuarioModel.findOne({email: profile._json.email});
+        // console.log('GitHub profile:', profile); // Agrega esto para ver la estructura del perfil
 
-            if(!usuario) {
-                const response = await CM.addCart();
+        try {
+            const email = (profile.emails && profile.emails[0].value) || profile._json.email;
+            if (!email) {
+                return done(new Error('No se pudo obtener el email del perfil de GitHub.'));
+            }
+
+            let usuario = await UsuarioModel.findOne({ email });
+            if (!usuario) {
+                const response = await cartController.addCart();
+                if (!response.success) {
+                    return done(new Error(response.message));
+                }
+
                 let nuevoUsuario = {
                     first_name: profile._json.name,
                     last_name: "",
                     age: 0,
-                    email: profile._json.email,
-                    password:"",
-                    avatar_url: profile._json.avatar_url ? profile._json.avatar_url: "/img/generic_avatar.jpeg",
+                    email,
+                    password: "",
+                    avatar_url: profile._json.avatar_url ? profile._json.avatar_url : "/img/generic_avatar.jpeg",
                     cart: response.cart,
-                    role:"user"
+                    role: "user"
                 }
 
+
                 let resultado = await UsuarioModel.create(nuevoUsuario);
-                done (null, resultado);
+
+                done(null, resultado);
             } else {
-                done(null,usuario);
+                console.log(usuario);
+
+                done(null, usuario);
             }
         } catch (error) {
+            console.log(error);
             return done(error);
         }
     }))

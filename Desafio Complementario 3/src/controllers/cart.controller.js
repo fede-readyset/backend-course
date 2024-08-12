@@ -61,7 +61,7 @@ export class CartController {
         }
     }
 
-    async addCart(req, res) {
+  /*   async addCart(req, res) {
         //const products = req.body.products  ||[];
         try {
             const cart = await this.cartService.createCart();
@@ -79,7 +79,27 @@ export class CartController {
             req.logger.error("Fallo al crear el carrito, error interno del servidor.");
 
         }
+    } */
+
+    async addCart() {
+        try {
+            const cart = await this.cartService.createCart();
+            return {
+                success: true,
+                message: "Carrito creado con éxito.",
+                cart
+            };
+        } catch (error) {
+            console.error("Fallo al crear el carrito, error interno del servidor:", error.message);
+            return {
+                success: false,
+                message: "Fallo al crear el carrito, error interno del servidor.",
+                error: error.message
+            };
+        }
     }
+
+
 
     async addProductToCart(req, res) {
         const { cid, pid } = req.params;
