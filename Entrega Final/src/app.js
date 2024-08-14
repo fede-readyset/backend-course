@@ -4,7 +4,8 @@ import exphbs from "express-handlebars";
 import Handlebars from 'handlebars';
 import MongoStore from "connect-mongo";
 import session from "express-session";
-import cookieParser from 'cookie-parser';
+// import cookieParser from 'cookie-parser';
+import configObject from "./config/config.js";
 
 
 // Importo conexión con database
@@ -27,7 +28,7 @@ import specs from "./config/swagger.config.js";
 
 
 // Defino variables e instancio clases
-const PUERTO = 8080;
+const PUERTO = configObject.port;
 const app = express();
 
 

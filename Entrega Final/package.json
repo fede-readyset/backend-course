@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon ./src/app.js",
     "chat": "nodemon ./src/app_chat.js",
-    "test": "mocha test/supertest.test.js"
+    "test": "mocha test/supertest.test.js",
+    "start": "node ./src/app.js"
   },
   "keywords": [],
   "author": "",
